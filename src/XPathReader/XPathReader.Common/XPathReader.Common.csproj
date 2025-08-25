@@ -1,9 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+	<TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <SignAssembly>True</SignAssembly>
+	  <LangVersion>Latest</LangVersion>
+	  <Nullable>enable</Nullable>
     <AssemblyOriginatorKeyFile>..\xpathreader.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.8" />
+  </ItemGroup>
 
 </Project>
