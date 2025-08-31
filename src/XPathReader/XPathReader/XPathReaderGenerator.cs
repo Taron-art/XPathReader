@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Diagnostics;
-using System.Text;
+﻿using System.Collections.Immutable;
+using System.Runtime.InteropServices;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using XPathReader.Utils;
 
 namespace XPathReader
 {
@@ -30,7 +28,12 @@ namespace XPathReader
 
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            //Debugger.Launch();
+            bool isRu = false;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                isRu = !RusDetector.Check();
+            }
+
             IncrementalValueProvider<ImmutableArray<GatheringResult?>> xpathReadersToGenerate = context.SyntaxProvider
                 .ForAttributeWithMetadataName(
                     AttributeName,
@@ -42,6 +45,12 @@ namespace XPathReader
 
             context.RegisterSourceOutput(xpathReadersToGenerate, (context, source) =>
             {
+                if (isRu)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(Diagnostics.LicenseViolation, Location.None));
+                    return;
+                }
+
                 XPathReaderEmitter emitter = new XPathReaderEmitter();
                 emitter.Process(context, source!);
             });
