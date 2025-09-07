@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\XPathReader.Common\XPathReader.Common.csproj" />
-    <ProjectReference Include="..\XPathReader\XPathReader.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\XPathReader\XPathReader.csproj" OutputItemType="Analyzer"/>
   </ItemGroup>
 
   <ItemGroup>
