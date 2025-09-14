@@ -1,10 +1,7 @@
-﻿using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
+using XPathReader.Utils;
+using XPathReader.XPathParsing;
 
 namespace XPathReader
 {
@@ -38,15 +35,16 @@ namespace XPathReader
                     result.XPathToGenerate.GeneratedName = result.XPathToGenerate.MethodInfo.Name;
                 }
 
+                XPathTree tree = new XPathParser().Parse(result.XPathToGenerate.XPaths);
 
-                IntendedTextWriterExtended textWriter = new IntendedTextWriterExtended(new StringWriter());
+                IntendedTextWriterExtended textWriter = new(new StringWriter());
                 foreach (string header in _headers)
                 {
                     textWriter.WriteLine(header);
                 }
 
                 EmitRegexPartialMethod(result.XPathToGenerate, textWriter);
-                EmitXPathReader(result.XPathToGenerate, textWriter);
+                EmitXPathReader(result.XPathToGenerate, tree, textWriter);
                 context.AddSource($"{result.XPathToGenerate.GeneratedName}.g.cs", textWriter.ToSourceText());
             }
         }
@@ -76,7 +74,8 @@ namespace XPathReader
 
             // Emit the field for the generated instance.
             writer.WriteLine($"[global::System.CodeDom.Compiler.{_generatedCodeAttribute}]");
-            writer.WriteLine($"private global::XPathReader.Common.XPathReader? __f{xpathToGenerate.GeneratedName} = null;");
+            bool isStatic = xpathToGenerate.Modifiers.Contains("static");
+            writer.WriteLine($"private{(isStatic ? " static" : string.Empty)} global::XPathReader.Common.XPathReader? __f{xpathToGenerate.GeneratedName} = null;");
             writer.WriteLine();
 
             // Emit the partial method definition.
@@ -95,7 +94,7 @@ namespace XPathReader
         }
 
 
-        private void EmitXPathReader(XPathReaderDataToGenerate xPathToGenerate, IntendedTextWriterExtended writer)
+        private void EmitXPathReader(XPathReaderDataToGenerate xPathToGenerate, XPathTree tree, IntendedTextWriterExtended writer)
         {
             writer.WriteLine($"namespace {GeneratedNamespace}");
             writer.OpenBrace();
@@ -110,6 +109,7 @@ namespace XPathReader
             writer.WriteLine("using System.Xml;");
             writer.WriteLine("using System.Threading.Tasks;");
             writer.WriteLine("using System.CodeDom.Compiler;");
+            writer.WriteLine("using System.Runtime.CompilerServices;");
             writer.WriteLine("using XPathReader.Common;");
             writer.WriteLine();
 
@@ -118,15 +118,22 @@ namespace XPathReader
             writer.WriteLine($"{(xPathToGenerate.CompilationData.LanguageVersion >= 1100 ? "file" : "internal")} sealed class {xPathToGenerate.GeneratedName} : XPathReader");
             writer.OpenBrace();
 
-            writer.WriteLine("protected override IEnumerable<ReadResult> ReadInternal(XmlReader reader)");
-            writer.OpenBrace();
-            writer.WriteLine("throw new NotImplementedException();");
-            writer.CloseBrace();
+            SyncXmlReaderTextIntendedTextWriter syncWriter = new(new StringWriter(), "reader")
+            {
+                Indent = writer.Indent
+            };
+            AsyncXmlReaderTextIntendedTextWriter asyncWriter = new(new StringWriter(), "reader");
+            asyncWriter.Indent = writer.Indent;
+            var emitter = new ReadXmlEmmitter(tree);
 
-            writer.WriteLine("protected override IAsyncEnumerable<ReadResult> ReadInternalAsync(XmlReader reader, CancellationToken cancellationToken = default)");
-            writer.OpenBrace();
-            writer.WriteLine("throw new NotImplementedException();");
-            writer.CloseBrace();
+            TwoXmlReaderTextIntendedTextWriterProxy proxyWriter = new(syncWriter, asyncWriter);
+            emitter.GenerateCode(proxyWriter);
+
+            syncWriter.Indent -= writer.Indent;
+            asyncWriter.Indent -= writer.Indent;
+            writer.Write(syncWriter.ToSourceText().ToString());
+            writer.WriteLine();
+            writer.Write(asyncWriter.ToSourceText().ToString());
 
             writer.CloseBrace();// class
             writer.CloseBrace();// namespace
