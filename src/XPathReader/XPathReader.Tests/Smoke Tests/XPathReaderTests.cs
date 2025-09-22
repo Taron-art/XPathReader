@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XPathReader.Common;
+﻿using XPathReader.Common;
+using XPathReader.Common.Internal;
 
 namespace XPathReader.Tests.Smoke_Tests
 {
@@ -13,7 +9,7 @@ namespace XPathReader.Tests.Smoke_Tests
     {
 
         [GeneratedXPathReader("/ukraine/geography/regions/region/name|/ukraine/economy/sectors/sector/companies/company|/ukraine/culture/languages/language")]
-        public static partial Common.XPathReader UkraineXmlReader();
+        private static partial Common.XPathReader UkraineXmlReader();
 
         [Test]
         public void UkraineXmlReader_ReturnsDifferentData()
@@ -24,8 +20,8 @@ namespace XPathReader.Tests.Smoke_Tests
             var secondInstance = UkraineXmlReader();
 
             Assert.That(firstInstance, Is.SameAs(secondInstance));
-            List<string> regions = new();
-            List<string> companies = new();
+            List<string> regions = [];
+            List<string> companies = [];
             byte languagesCount = 0;
             foreach (var result in UkraineXmlReader().Read(testFile))
             {
@@ -46,13 +42,15 @@ namespace XPathReader.Tests.Smoke_Tests
                         Assert.Fail("Unexpected XPath: " + result.RequestedXPath);
                         break;
                 }
+
+                Assert.That(result.NodeReader.NameTable, Is.InstanceOf<ThreadSafeNameTable>());
             }
 
-            Assert.That(regions.Count, Is.EqualTo(2));
+            Assert.That(regions, Has.Count.EqualTo(2));
             Assert.That(regions[0], Is.EqualTo("<name>Lviv Oblast</name>"));
             Assert.That(regions[1], Is.EqualTo("<name>Kyiv Oblast</name>"));
 
-            Assert.That(companies.Count, Is.EqualTo(2));
+            Assert.That(companies, Has.Count.EqualTo(2));
             Assert.That(companies[0], Is.EqualTo(
                 """
                 <company>
@@ -78,8 +76,8 @@ namespace XPathReader.Tests.Smoke_Tests
         {
             Stream testFile = File.OpenRead("Smoke Tests/TestFile.xml");
 
-            List<string> regions = new();
-            List<string> companies = new();
+            List<string> regions = [];
+            List<string> companies = [];
             byte languagesCount = 0;
             await foreach (var result in UkraineXmlReader().ReadAsync(testFile))
             {
@@ -100,13 +98,15 @@ namespace XPathReader.Tests.Smoke_Tests
                         Assert.Fail("Unexpected XPath: " + result.RequestedXPath);
                         break;
                 }
+
+                Assert.That(result.NodeReader.NameTable, Is.InstanceOf<ThreadSafeNameTable>());
             }
 
-            Assert.That(regions.Count, Is.EqualTo(2));
+            Assert.That(regions, Has.Count.EqualTo(2));
             Assert.That(regions[0], Is.EqualTo("<name>Lviv Oblast</name>"));
             Assert.That(regions[1], Is.EqualTo("<name>Kyiv Oblast</name>"));
 
-            Assert.That(companies.Count, Is.EqualTo(2));
+            Assert.That(companies, Has.Count.EqualTo(2));
             Assert.That(companies[0], Is.EqualTo(
                 """
                 <company>
