@@ -25,6 +25,12 @@ namespace XPathReader.Utils
             _second.Write(s);
         }
 
+        public void WriteLine()
+        {
+            _first.WriteLine();
+            _second.WriteLine();
+        }
+
         public void WriteLine(char value)
         {
             _first.WriteLine(value);

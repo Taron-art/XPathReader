@@ -23,7 +23,7 @@ namespace XPathReader.Tests
 
                     public partial class TestClass
                     {
-                        [GeneratedXPathReader("/root/child1|/root/child|/root/child/|root/child3/grandchild1")]
+                        [GeneratedXPathReader("/root/child1|/root/child|/root/child.important/|root/child-3/grandchild1")]
                         public partial XPathReader CreateReader();
                     }
                 }

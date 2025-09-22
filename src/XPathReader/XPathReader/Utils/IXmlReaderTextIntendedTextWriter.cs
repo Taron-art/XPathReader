@@ -10,6 +10,8 @@
 
         void WriteLine(string s);
 
+        void WriteLine();
+
         void WriteLineMethodSignature(string modifiers, string methodName);
 
         void WriteLineMoveToContent(string? readerName = null);
