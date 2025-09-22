@@ -1,6 +1,4 @@
 ﻿using System.Text;
-using System.Xml;
-using Medallion.Collections;
 using XPathReader.Utils;
 using XPathReader.XPathParsing;
 

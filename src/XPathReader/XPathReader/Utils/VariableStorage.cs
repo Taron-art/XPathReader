@@ -7,6 +7,7 @@ namespace XPathReader.Utils
         private readonly Dictionary<string, string> _variables = new();
 
         private int _variableIndex = 0;
+        private StringBuilder? _variableNameBuilder;
 
         public string this[string value]
         {
@@ -25,24 +26,25 @@ namespace XPathReader.Utils
             return newVariable;
         }
 
-        private static string GetValidVariableName(string nodeName)
+        private string GetValidVariableName(string nodeName)
         {
-            StringBuilder sb = new(nodeName.Length + 2);
-            sb.Append('e');
-            sb.Append('_');
+            StringBuilder stringBuilder = (_variableNameBuilder ??= new(nodeName.Length + 2));
+            stringBuilder.Length = 0;
+            stringBuilder.Append('e');
+            stringBuilder.Append('_');
             foreach (char c in nodeName)
             {
                 if (char.IsLetterOrDigit(c) || c == '_')
                 {
-                    sb.Append(c);
+                    stringBuilder.Append(c);
                 }
                 else
                 {
-                    sb.Append('_');
+                    stringBuilder.Append('_');
                 }
             }
 
-            return sb.ToString();
+            return stringBuilder.ToString();
         }
     }
 }
