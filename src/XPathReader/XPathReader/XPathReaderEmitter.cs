@@ -23,6 +23,7 @@ namespace XPathReader
 
         internal void Process(SourceProductionContext context, ImmutableArray<GatheringResult> array)
         {
+            XPathParser xPathParser = new();
             foreach (GatheringResult result in array.Where(result => result.XPathToGenerate is not null))
             {
                 if (_names.Contains(result.XPathToGenerate!.MethodInfo.Name))
@@ -35,7 +36,26 @@ namespace XPathReader
                     result.XPathToGenerate.GeneratedName = result.XPathToGenerate.MethodInfo.Name;
                 }
 
-                XPathTree tree = new XPathParser().Parse(result.XPathToGenerate.XPaths);
+                XPathTree tree;
+                try
+                {
+                    tree = xPathParser.Parse(result.XPathToGenerate.XPaths);
+
+                    foreach (DiagnosticData diagnostic in xPathParser.NonErrorDiagnostics)
+                    {
+                        context.ReportDiagnostic(Diagnostic.Create(diagnostic.Descriptor, result.XPathToGenerate.DiagnosticLocation, diagnostic.Args));
+                    }
+                }
+                catch (InvalidXPathException ex)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(Diagnostics.InvalidArgument, result.XPathToGenerate.DiagnosticLocation, ex.XPath, ex.Message));
+                    continue;
+                }
+                catch (UnsupportedXPathException ex)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(Diagnostics.UnsupportedXPath, result.XPathToGenerate.DiagnosticLocation, ex.XPath, ex.Message));
+                    continue;
+                }
 
                 IntendedTextWriterExtended textWriter = new(new StringWriter());
                 foreach (string header in _headers)
@@ -45,7 +65,13 @@ namespace XPathReader
 
                 EmitRegexPartialMethod(result.XPathToGenerate, textWriter);
                 EmitXPathReader(result.XPathToGenerate, tree, textWriter);
+
                 context.AddSource($"{result.XPathToGenerate.GeneratedName}.g.cs", textWriter.ToSourceText());
+            }
+
+            foreach (GatheringResult result in array.Where(result => result.DiagnosticData is not null))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(result.DiagnosticData!.Descriptor, result.DiagnosticData.Location, result.DiagnosticData.Args));
             }
         }
 
@@ -75,7 +101,7 @@ namespace XPathReader
             // Emit the field for the generated instance.
             writer.WriteLine($"[global::System.CodeDom.Compiler.{_generatedCodeAttribute}]");
             bool isStatic = xpathToGenerate.Modifiers.Contains("static");
-            writer.WriteLine($"private{(isStatic ? " static" : string.Empty)} global::XPathReader.Common.XPathReader? __f{xpathToGenerate.GeneratedName} = null;");
+            writer.WriteLine($"private{(isStatic ? " static" : string.Empty)} global::XPathReader.Common.XPathReader? __f{xpathToGenerate.GeneratedName};");
             writer.WriteLine();
 
             // Emit the partial method definition.
