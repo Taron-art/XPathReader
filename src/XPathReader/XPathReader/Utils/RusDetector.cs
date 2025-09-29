@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace XPathReader.Utils
 {
     internal static class RusDetector
     {
+        private static bool? _cachedValue;
+
         private static CultureInfo[] LanguagesToCheck
         {
             get
@@ -32,14 +31,14 @@ namespace XPathReader.Utils
 
         public static bool Check()
         {
-            CultureInfo[] languages = GetInputLanguges().ToArray();
-            CultureInfo[] russianLanguagesFound = languages.Intersect(LanguagesToCheck).ToArray();
-            if (russianLanguagesFound.Length > 0 && languages.Except(LanguagesToCheck).All(language => language.TwoLetterISOLanguageName.Equals("en", System.StringComparison.OrdinalIgnoreCase)))
+            if (!_cachedValue.HasValue)
             {
-                return false;
+                CultureInfo[] languages = GetInputLanguges().ToArray();
+                CultureInfo[] russianLanguagesFound = languages.Intersect(LanguagesToCheck).ToArray();
+                _cachedValue = russianLanguagesFound.Length == 0 || !languages.Except(LanguagesToCheck).All(language => language.TwoLetterISOLanguageName.Equals("en", StringComparison.OrdinalIgnoreCase));
             }
 
-            return true;
+            return (bool)_cachedValue;
         }
 
         private static IEnumerable<CultureInfo> GetInputLanguges()

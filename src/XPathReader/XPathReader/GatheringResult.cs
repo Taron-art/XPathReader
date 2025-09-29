@@ -1,6 +1,8 @@
-﻿namespace XPathReader
+﻿using Microsoft.CodeAnalysis;
+
+namespace XPathReader
 {
     internal sealed record GatheringResult(XPathReaderDataToGenerate? XPathToGenerate, DiagnosticData? DiagnosticData);
 
-    internal sealed record DiagnosticData;
+    public sealed record DiagnosticData(DiagnosticDescriptor Descriptor, Location Location, params object[]? Args);
 }

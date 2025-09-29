@@ -1,0 +1,20 @@
+﻿{
+  Diagnostics: [
+    {
+      Location: : (7,8)-(8,51),
+      Message: GeneratedXPathReaderAttribute method must be partial, parameterless, non-generic, non-abstract, and return XPathReader. Non-static methods cannot be declared in an Interface or a readonly Struct.,
+      Severity: Error,
+      Descriptor: {
+        Id: XPR004,
+        Title: Invalid GeneratedXPathReaderAttribute usage,
+        MessageFormat: GeneratedXPathReaderAttribute method must be partial, parameterless, non-generic, non-abstract, and return XPathReader. Non-static methods cannot be declared in an Interface or a readonly Struct.,
+        Category: Usage,
+        DefaultSeverity: Error,
+        IsEnabledByDefault: true,
+        CustomTags: [
+          NotConfigurable
+        ]
+      }
+    }
+  ]
+}

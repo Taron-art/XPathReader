@@ -3,13 +3,13 @@
 #nullable enable
 namespace XPathReader.TestInterface
 {
-    partial class TestClass
+    partial record class TestClass
     {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("XPathReader", "1.0.0.0")]
-        private global::XPathReader.Common.XPathReader? __fTestClass = null;
+        private static global::XPathReader.Common.XPathReader? __fTestClass;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("XPathReader", "1.0.0.0")]
-        public partial global::XPathReader.Common.XPathReader CreateReader()
+        public static partial global::XPathReader.Common.XPathReader CreateReader()
         {
             return __fTestClass ??= new global::XPathReader.Generated.TestClass();
         }
@@ -100,7 +100,7 @@ namespace XPathReader.Generated
                                         
                                         XmlReader localReader = reader.ReadSubtree();
                                         localReader.MoveToContent();
-                                        yield return new ReadResult(currentXPathBuilder, localReader, "/root/child.important/");
+                                        yield return new ReadResult(currentXPathBuilder, localReader, "/root/child.important");
                                         localReader.Dispose();
                                         
                                         currentXPathBuilder.Length = originalLength00000009;
@@ -124,7 +124,7 @@ namespace XPathReader.Generated
                                                     
                                                     XmlReader localReader = reader.ReadSubtree();
                                                     localReader.MoveToContent();
-                                                    yield return new ReadResult(currentXPathBuilder, localReader, "root/child-3/grandchild1");
+                                                    yield return new ReadResult(currentXPathBuilder, localReader, "/root/child-3/grandchild1");
                                                     localReader.Dispose();
                                                     
                                                     currentXPathBuilder.Length = originalLength0000000c;
@@ -248,7 +248,7 @@ namespace XPathReader.Generated
                                         XmlReader localReader = reader.ReadSubtree();
                                         cancellationToken.ThrowIfCancellationRequested();
                                         await localReader.MoveToContentAsync().ConfigureAwait(false);
-                                        yield return new ReadResult(currentXPathBuilder, localReader, "/root/child.important/");
+                                        yield return new ReadResult(currentXPathBuilder, localReader, "/root/child.important");
                                         localReader.Dispose();
                                         
                                         currentXPathBuilder.Length = originalLength00000009;
@@ -273,7 +273,7 @@ namespace XPathReader.Generated
                                                     XmlReader localReader = reader.ReadSubtree();
                                                     cancellationToken.ThrowIfCancellationRequested();
                                                     await localReader.MoveToContentAsync().ConfigureAwait(false);
-                                                    yield return new ReadResult(currentXPathBuilder, localReader, "root/child-3/grandchild1");
+                                                    yield return new ReadResult(currentXPathBuilder, localReader, "/root/child-3/grandchild1");
                                                     localReader.Dispose();
                                                     
                                                     currentXPathBuilder.Length = originalLength0000000c;
