@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Runtime.InteropServices;
+using ILLink.RoslynAnalyzer;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -11,6 +12,7 @@ namespace XPathReader
     public partial class XPathReaderGenerator : IIncrementalGenerator
     {
         private const string AttributeName = "XPathReader.Common.GeneratedXPathReaderAttribute";
+        private const string XPathReaderName = "XPathReader.Common.XPathReader";
 
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
@@ -50,21 +52,46 @@ namespace XPathReader
                 return null;
             }
 
+            INamedTypeSymbol? xPathReaderSymbol = context.SemanticModel.Compilation.GetBestTypeByMetadataName(XPathReaderName);
+
             ImmutableArray<AttributeData> boundAttributes = context.Attributes;
             AttributeData generatedXPathAttribute = boundAttributes[0];
             ImmutableArray<TypedConstant> items = generatedXPathAttribute.ConstructorArguments;
             if (items.Length == 1)
             {
-                string? xpaths = items[0].Value as string;
+                string? xPaths = items[0].Value as string;
                 IMethodSymbol memberSymbol = (IMethodSymbol)context.TargetSymbol;
+
+
+                if (string.IsNullOrEmpty(xPaths))
+                {
+                    return new GatheringResult(
+                        null,
+                        new DiagnosticData(Diagnostics.InvalidArgument, GetComparableLocation(memberSyntax), xPaths ?? "(null)", "Value is null or empty."));
+                }
+
+                if (!memberSymbol.IsPartialDefinition ||
+                    memberSymbol.IsAbstract ||
+                    memberSymbol.Parameters.Length != 0 ||
+                    memberSymbol.Arity != 0 ||
+                    generatedXPathAttribute.ConstructorArguments.Any(c => c.Kind == TypedConstantKind.Error) ||
+                    !SymbolEqualityComparer.Default.Equals(memberSymbol.ReturnType, xPathReaderSymbol))
+                {
+                    return new GatheringResult(null, new DiagnosticData(Diagnostics.XPathReaderMemberMustHaveValidSignature, GetComparableLocation(memberSyntax)));
+                }
+
+                if (!memberSymbol.IsStatic && (memberSyntax.Parent is InterfaceDeclarationSyntax || (memberSyntax.Parent is StructDeclarationSyntax structDeclaration && structDeclaration.Modifiers.FirstOrDefault(token => token.IsKind(SyntaxKind.ReadOnlyKeyword)) != default)))
+                {
+                    return new GatheringResult(null, new DiagnosticData(Diagnostics.XPathReaderMemberMustHaveValidSignature, GetComparableLocation(memberSyntax)));
+                }
 
                 bool isNullable = memberSymbol.ReturnType.NullableAnnotation == NullableAnnotation.Annotated;
                 // Determine the namespace the class is declared in, if any
                 string? ns = memberSymbol.ContainingType?.ContainingNamespace?.ToDisplayString(
                     SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
 
-                MemberInfo memberInfo = new MemberInfo(
-                    typeDec is RecordDeclarationSyntax rds ? $"{typeDec.Keyword.ValueText} {rds.ClassOrStructKeyword}" : typeDec.Keyword.ValueText,
+                MemberInfo memberInfo = new(
+                    typeDec is RecordDeclarationSyntax rds ? $"{typeDec.Keyword.ValueText} {rds.ClassOrStructKeyword}".Trim() : typeDec.Keyword.ValueText,
                     ns ?? string.Empty,
                     $"{typeDec.Identifier}{typeDec.TypeParameterList}");
 
@@ -90,7 +117,7 @@ namespace XPathReader
                             memberSymbol.Name,
                             ((MemberDeclarationSyntax)context.TargetNode).Modifiers.ToString(),
                             isNullable,
-                            xpaths ?? string.Empty,
+                            xPaths ?? string.Empty,
                             new CompilationData
                             {
                                 LanguageVersion = context.SemanticModel.Compilation is CSharpCompilation csharpCompilation ? (int)csharpCompilation.LanguageVersion : 703
@@ -98,7 +125,7 @@ namespace XPathReader
                     null);
             }
 
-            return new GatheringResult(null, new DiagnosticData());
+            return new GatheringResult(null, null);
         }
 
         private static bool IsAllowedKind(SyntaxKind kind)
