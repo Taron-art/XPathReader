@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using ILLink.RoslynAnalyzer;
 using Microsoft.CodeAnalysis;
@@ -25,7 +26,7 @@ namespace XPathReader
             IncrementalValueProvider<ImmutableArray<GatheringResult?>> xpathReadersToGenerate = context.SyntaxProvider
                 .ForAttributeWithMetadataName(
                     AttributeName,
-                    static (node, _) => node is MethodDeclarationSyntax,
+                    static (node, _) => node is MethodDeclarationSyntax or PropertyDeclarationSyntax,
                     GetClassesToGenerate)
                 .Where(static m => m is not null)
                 .Collect()
@@ -60,8 +61,6 @@ namespace XPathReader
             if (items.Length == 1)
             {
                 string? xPaths = items[0].Value as string;
-                IMethodSymbol memberSymbol = (IMethodSymbol)context.TargetSymbol;
-
 
                 if (string.IsNullOrEmpty(xPaths))
                 {
@@ -70,14 +69,37 @@ namespace XPathReader
                         new DiagnosticData(Diagnostics.InvalidArgument, GetComparableLocation(memberSyntax), xPaths ?? "(null)", "Value is null or empty."));
                 }
 
-                if (!memberSymbol.IsPartialDefinition ||
-                    memberSymbol.IsAbstract ||
-                    memberSymbol.Parameters.Length != 0 ||
-                    memberSymbol.Arity != 0 ||
-                    generatedXPathAttribute.ConstructorArguments.Any(c => c.Kind == TypedConstantKind.Error) ||
-                    !SymbolEqualityComparer.Default.Equals(memberSymbol.ReturnType, xPathReaderSymbol))
+                ISymbol? memberSymbol = context.TargetSymbol is IMethodSymbol or IPropertySymbol ? context.TargetSymbol : null;
+                if (memberSymbol is null)
                 {
                     return new GatheringResult(null, new DiagnosticData(Diagnostics.XPathReaderMemberMustHaveValidSignature, GetComparableLocation(memberSyntax)));
+                }
+
+                if (memberSymbol is IMethodSymbol methodSymbol)
+                {
+                    if (!methodSymbol.IsPartialDefinition ||
+                        methodSymbol.IsAbstract ||
+                        methodSymbol.Parameters.Length != 0 ||
+                        methodSymbol.Arity != 0 ||
+                        methodSymbol.ReturnNullableAnnotation == NullableAnnotation.Annotated ||
+                        generatedXPathAttribute.ConstructorArguments.Any(c => c.Kind == TypedConstantKind.Error) ||
+                        !SymbolEqualityComparer.Default.Equals(methodSymbol.ReturnType, xPathReaderSymbol))
+                    {
+                        return new GatheringResult(null, new DiagnosticData(Diagnostics.XPathReaderMemberMustHaveValidSignature, GetComparableLocation(memberSyntax)));
+                    }
+                }
+                else
+                {
+                    Debug.Assert(memberSymbol is IPropertySymbol);
+                    IPropertySymbol propertySymbol = (IPropertySymbol)memberSymbol;
+                    if (!propertySymbol.IsPartialDefinition ||
+                        propertySymbol.IsAbstract ||
+                        propertySymbol.SetMethod is not null ||
+                        propertySymbol.NullableAnnotation == NullableAnnotation.Annotated ||
+                        !SymbolEqualityComparer.Default.Equals(propertySymbol.Type, xPathReaderSymbol))
+                    {
+                        return new GatheringResult(null, new DiagnosticData(Diagnostics.XPathReaderMemberMustHaveValidSignature, GetComparableLocation(memberSyntax)));
+                    }
                 }
 
                 if (!memberSymbol.IsStatic && (memberSyntax.Parent is InterfaceDeclarationSyntax || (memberSyntax.Parent is StructDeclarationSyntax structDeclaration && structDeclaration.Modifiers.FirstOrDefault(token => token.IsKind(SyntaxKind.ReadOnlyKeyword)) != default)))
@@ -85,7 +107,6 @@ namespace XPathReader
                     return new GatheringResult(null, new DiagnosticData(Diagnostics.XPathReaderMemberMustHaveValidSignature, GetComparableLocation(memberSyntax)));
                 }
 
-                bool isNullable = memberSymbol.ReturnType.NullableAnnotation == NullableAnnotation.Annotated;
                 // Determine the namespace the class is declared in, if any
                 string? ns = memberSymbol.ContainingType?.ContainingNamespace?.ToDisplayString(
                     SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted));
@@ -112,11 +133,10 @@ namespace XPathReader
                 return new GatheringResult(
                         new XPathReaderDataToGenerate(
                             memberInfo,
-                            false,
+                            memberSymbol is IPropertySymbol,
                             GetComparableLocation(memberSyntax),
                             memberSymbol.Name,
                             ((MemberDeclarationSyntax)context.TargetNode).Modifiers.ToString(),
-                            isNullable,
                             xPaths ?? string.Empty,
                             new CompilationData
                             {

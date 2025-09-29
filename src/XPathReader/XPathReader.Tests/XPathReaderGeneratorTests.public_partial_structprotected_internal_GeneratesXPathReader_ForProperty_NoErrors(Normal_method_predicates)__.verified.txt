@@ -1,0 +1,89 @@
+﻿{
+  Diagnostics: [
+    {
+      Location: : (7,8)-(8,67),
+      Message: Predicate [1] is not recognized and will be ignored,
+      Severity: Warning,
+      WarningLevel: 1,
+      Descriptor: {
+        Id: XPR005,
+        Title: Predicate will be ignored,
+        MessageFormat: Predicate {0} is not recognized and will be ignored,
+        Category: Usage,
+        DefaultSeverity: Warning,
+        IsEnabledByDefault: true,
+        CustomTags: [
+          CustomSeverityConfigurable
+        ]
+      }
+    },
+    {
+      Location: : (7,8)-(8,67),
+      Message: Predicate [ready()] is not recognized and will be ignored,
+      Severity: Warning,
+      WarningLevel: 1,
+      Descriptor: {
+        Id: XPR005,
+        Title: Predicate will be ignored,
+        MessageFormat: Predicate {0} is not recognized and will be ignored,
+        Category: Usage,
+        DefaultSeverity: Warning,
+        IsEnabledByDefault: true,
+        CustomTags: [
+          CustomSeverityConfigurable
+        ]
+      }
+    },
+    {
+      Location: : (7,8)-(8,67),
+      Message: Predicate [1] is not recognized and will be ignored,
+      Severity: Warning,
+      WarningLevel: 1,
+      Descriptor: {
+        Id: XPR005,
+        Title: Predicate will be ignored,
+        MessageFormat: Predicate {0} is not recognized and will be ignored,
+        Category: Usage,
+        DefaultSeverity: Warning,
+        IsEnabledByDefault: true,
+        CustomTags: [
+          CustomSeverityConfigurable
+        ]
+      }
+    },
+    {
+      Location: : (7,8)-(8,67),
+      Message: Predicate [@attribute] is not recognized and will be ignored,
+      Severity: Warning,
+      WarningLevel: 1,
+      Descriptor: {
+        Id: XPR005,
+        Title: Predicate will be ignored,
+        MessageFormat: Predicate {0} is not recognized and will be ignored,
+        Category: Usage,
+        DefaultSeverity: Warning,
+        IsEnabledByDefault: true,
+        CustomTags: [
+          CustomSeverityConfigurable
+        ]
+      }
+    },
+    {
+      Location: : (7,8)-(8,67),
+      Message: Predicate [name] is not recognized and will be ignored,
+      Severity: Warning,
+      WarningLevel: 1,
+      Descriptor: {
+        Id: XPR005,
+        Title: Predicate will be ignored,
+        MessageFormat: Predicate {0} is not recognized and will be ignored,
+        Category: Usage,
+        DefaultSeverity: Warning,
+        IsEnabledByDefault: true,
+        CustomTags: [
+          CustomSeverityConfigurable
+        ]
+      }
+    }
+  ]
+}

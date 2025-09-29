@@ -61,6 +61,28 @@
             await Verify(source, settings);
         }
 
+        [TestCaseSource(nameof(GetDataForGeneratesXPathReaderCorrectly))]
+        public async Task GeneratesXPathReader_ForProperty_NoErrors(string attribute)
+        {
+            string source =
+                $$"""
+                namespace XPathReader.TestInterface
+                {
+                    using System;
+                    using XPathReader.Common;
+
+                    {{_parentModifiers}} TestClass
+                    {
+                        {{attribute}}
+                        {{_methodModifiers}} partial XPathReader CreateReader {get;};
+                    }
+                }
+                """;
+
+            VerifySettings settings = CreateSettingsForSourceTests();
+            await Verify(source, settings);
+        }
+
         private static IEnumerable<TestCaseData<string>> GetDataForNotGeneratesXPathReader_InvalidArgument()
         {
             yield return (TestCaseData<string>)new TestCaseData<string>("[GeneratedXPathReader(null)]").SetArgDisplayNames("Null_argument");
