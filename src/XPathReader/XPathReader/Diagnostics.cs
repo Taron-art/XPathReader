@@ -34,7 +34,7 @@ namespace XPathReader
         public static readonly DiagnosticDescriptor XPathReaderMemberMustHaveValidSignature = new(
             id: "XPR004",
             title: "Invalid GeneratedXPathReaderAttribute usage",
-            messageFormat: "GeneratedXPathReaderAttribute method must be partial, parameterless, non-generic, non-abstract, and return XPathReader. Non-static methods cannot be declared in an Interface or a readonly Struct.",
+            messageFormat: "GeneratedXPathReaderAttribute member must be partial, parameterless, non-generic, non-abstract, non-nullable and return XPathReader. Non-static members cannot be declared in an Interface or a readonly Struct. If a property, it must also be get-only.",
             category: "Usage",
             DiagnosticSeverity.Error,
             isEnabledByDefault: true,
