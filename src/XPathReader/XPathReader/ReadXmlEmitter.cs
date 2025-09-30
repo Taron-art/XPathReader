@@ -27,6 +27,7 @@ namespace XPathReader
 
         private void Generate(IXmlReaderTextIntendedTextWriter writer)
         {
+            writer.WriteLine("/// <inheritdoc/>");
             writer.WriteLineMethodSignature(_modifiers, "ReadInternal");
             writer.OpenBrace();
             writer.WriteLine("using (reader)");

@@ -10,7 +10,7 @@ namespace XPathReader.XPathParsing
     {
         public List<DiagnosticData> NonErrorDiagnostics { get; } = [];
 
-        public XPathTree Parse(string xPathsInOneString)
+        public (XPathTree Tree, HashSet<string> XPaths) Parse(string xPathsInOneString)
         {
             NonErrorDiagnostics.Clear();
 
@@ -61,7 +61,7 @@ namespace XPathReader.XPathParsing
                 throw new XPathParsingException("Failed to extract single valid xpath from the argument");
             }
 
-            return new XPathTree(root);
+            return (new XPathTree(root), uniqueXPaths);
         }
 
         private static void ValidateXPath(string xPath)
