@@ -68,8 +68,32 @@ namespace XPathReader.Common
             {
                 xmlReaderSettings.NameTable = _nameTable;
             }
+
             XmlReader xmlReader = XmlReader.Create(input, xmlReaderSettings, inputContext);
             return ReadInternal(xmlReader);
+        }
+
+        /// <summary>
+        /// Reads XML data from the provided <see cref="XmlReader"/> and yields XPath matches.
+        /// </summary>
+        /// <remarks>
+        /// Methods creates a sub-tree reader from the provided reader.
+        /// </remarks>
+        /// <param name="reader">Reader to read from. Reader must be positioned on an element.</param>
+        /// <returns>An enumerable collection of <see cref="ReadResult"/> containing matched XPath nodes.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="reader"/> is null.</exception>
+        /// <exception cref="InvalidOperationException">An <see cref="XmlReader"/> method was called before a previous asynchronous operation finished.</exception>
+        /// <exception cref="InvalidOperationException">The <paramref name="reader"/> isn't positioned on an element when this method is called.</exception>
+        /// <exception cref="XmlException">Incorrect XML encountered in the input stream.</exception>
+        public IEnumerable<ReadResult> ReadFromSubtree(XmlReader reader)
+        {
+            if (reader is null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
+            XmlReader subTreeReader = reader.ReadSubtree();
+            return ReadInternal(subTreeReader);
         }
 
         /// <summary>
@@ -126,8 +150,33 @@ namespace XPathReader.Common
             {
                 xmlReaderSettings.NameTable = _nameTable;
             }
+
             XmlReader xmlReader = XmlReader.Create(input, xmlReaderSettings, inputContext);
             return ReadInternalAsync(xmlReader, cancellationToken);
+        }
+
+        /// <summary>
+        /// Asynchronously reads XML data from the provided <see cref="XmlReader"/> and yields XPath matches.
+        /// </summary>
+        /// <remarks>
+        /// Methods creates a sub-tree reader from the provided reader.
+        /// </remarks>
+        /// <param name="reader">Reader to read from. Reader must be positioned on an element.</param>
+        /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
+        /// <returns>An enumerable collection of <see cref="ReadResult"/> containing matched XPath nodes.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="reader"/> is null.</exception>
+        /// <exception cref="InvalidOperationException">An <see cref="XmlReader"/> method was called before a previous asynchronous operation finished.</exception>
+        /// <exception cref="InvalidOperationException">The <paramref name="reader"/> isn't positioned on an element when this method is called.</exception>
+        /// <exception cref="XmlException">Incorrect XML encountered in the input stream.</exception>
+        public IAsyncEnumerable<ReadResult> ReadFromSubtreeAsync(XmlReader reader, CancellationToken cancellationToken = default)
+        {
+            if (reader is null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
+            XmlReader subTreeReader = reader.ReadSubtree();
+            return ReadInternalAsync(subTreeReader, cancellationToken);
         }
 
         /// <summary>
