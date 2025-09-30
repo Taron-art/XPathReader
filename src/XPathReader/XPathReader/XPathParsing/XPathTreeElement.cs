@@ -23,7 +23,7 @@ namespace XPathReader.XPathParsing
         }
     }
 
-    [DebuggerDisplay("Identifier: {Identifier}, First Reqested Path = {RequestedXPaths[0]}")]
+    [DebuggerDisplay("Identifier: {Identifier}, First Requested Path = {RequestedXPaths[0]}")]
     public sealed class XPathTreeLeafElement : XPathTreeElement
     {
         public XPathTreeLeafElement(XPathLevelIdentifier identifier, string requestedXPath) : base(identifier)

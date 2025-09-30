@@ -24,8 +24,8 @@ namespace XPathReader.Tests.XPathParsing
             var result = _parser.Parse(xPath);
 
             // Assert
-            Assert.That(result, Is.Not.Null);
-            Assert.That(GetAllXPaths(result), Has.Member(xPath));
+            Assert.That(result.Tree, Is.Not.Null);
+            Assert.That(GetAllXPaths(result.Tree), Has.Member(xPath));
         }
 
         private static IEnumerable<TestCaseData<string, XPathTree>> MultipleXPathsTestCases()
@@ -75,7 +75,7 @@ namespace XPathReader.Tests.XPathParsing
         public void Parse_MultipleXPaths_CreatesCorrectTree(string xPaths, XPathTree expected)
         {
             // Act
-            XPathTree result = _parser.Parse(xPaths);
+            XPathTree result = _parser.Parse(xPaths).Tree;
 
             // Assert
             Assert.That(result, Is.EqualTo(expected).UsingPropertiesComparer());
@@ -90,7 +90,7 @@ namespace XPathReader.Tests.XPathParsing
             var result = _parser.Parse(xpaths);
 
             // Assert
-            Assert.That(GetAllXPaths(result), Has.Count.EqualTo(2));
+            Assert.That(GetAllXPaths(result.Tree), Has.Count.EqualTo(2));
         }
 
         [Test]
