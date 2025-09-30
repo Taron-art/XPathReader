@@ -11,6 +11,9 @@ namespace XPathReader.Tests.Smoke_Tests
         [GeneratedXPathReader("/ukraine/geography/regions/region/name|/ukraine/economy/sectors/sector/companies/company|/ukraine/culture/languages/language")]
         private static partial Common.XPathReader UkraineXmlReader();
 
+        [GeneratedXPathReader("/company/name")]
+        private static partial Common.XPathReader CompanyNameReader { get; }
+
         [Test]
         public void UkraineXmlReader_ReturnsDifferentData()
         {
@@ -32,7 +35,7 @@ namespace XPathReader.Tests.Smoke_Tests
                         Assert.That(result.ActualXPath.GetXPath(), Is.EqualTo($"/ukraine/geography[1]/regions[1]/region[{regions.Count}]/name[1]"));
                         break;
                     case "/ukraine/economy/sectors/sector/companies/company":
-                        companies.Add(result.NodeReader.ReadOuterXml());
+                        companies.Add(CompanyNameReader.ReadFromSubtree(result.NodeReader).Select(result => result.NodeReader.ReadOuterXml()).Single());
                         Assert.That(result.ActualXPath.GetXPath(), Is.EqualTo($"/ukraine/economy[1]/sectors[1]/sector[2]/companies[1]/company[{companies.Count}]"));
                         break;
                     case "/ukraine/culture/languages/language":
@@ -53,19 +56,11 @@ namespace XPathReader.Tests.Smoke_Tests
             Assert.That(companies, Has.Count.EqualTo(2));
             Assert.That(companies[0], Is.EqualTo(
                 """
-                <company>
-                    <name>Grammarly</name>
-                    <location>Kyiv</location>
-                    <employees>600</employees>
-                </company>
+                <name>Grammarly</name>
                 """).IgnoreWhiteSpace);
             Assert.That(companies[1], Is.EqualTo(
                 """
-                <company>
-                    <name>GitLab</name>
-                    <location>Kharkiv</location>
-                    <employees>300</employees>
-                </company>
+                <name>GitLab</name>
                 """).IgnoreWhiteSpace);
 
             Assert.That(languagesCount, Is.EqualTo(4));
@@ -88,7 +83,10 @@ namespace XPathReader.Tests.Smoke_Tests
                         Assert.That(result.ActualXPath.GetXPath(), Is.EqualTo($"/ukraine/geography[1]/regions[1]/region[{regions.Count}]/name[1]"));
                         break;
                     case "/ukraine/economy/sectors/sector/companies/company":
-                        companies.Add(await result.NodeReader.ReadOuterXmlAsync());
+                        await foreach (ReadResult companyResult in CompanyNameReader.ReadFromSubtreeAsync(result.NodeReader))
+                        {
+                            companies.Add(await companyResult.NodeReader.ReadOuterXmlAsync());
+                        }
                         Assert.That(result.ActualXPath.GetXPath(), Is.EqualTo($"/ukraine/economy[1]/sectors[1]/sector[2]/companies[1]/company[{companies.Count}]"));
                         break;
                     case "/ukraine/culture/languages/language":
@@ -109,19 +107,11 @@ namespace XPathReader.Tests.Smoke_Tests
             Assert.That(companies, Has.Count.EqualTo(2));
             Assert.That(companies[0], Is.EqualTo(
                 """
-                <company>
-                    <name>Grammarly</name>
-                    <location>Kyiv</location>
-                    <employees>600</employees>
-                </company>
+                <name>Grammarly</name>
                 """).IgnoreWhiteSpace);
             Assert.That(companies[1], Is.EqualTo(
                 """
-                <company>
-                    <name>GitLab</name>
-                    <location>Kharkiv</location>
-                    <employees>300</employees>
-                </company>
+                <name>GitLab</name>
                 """).IgnoreWhiteSpace);
 
             Assert.That(languagesCount, Is.EqualTo(4));

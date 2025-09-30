@@ -5,9 +5,16 @@ namespace XPathReader.TestInterface
 {
     partial record class TestClass
     {
+        /// <summary>Cached instance for <see cref="CreateReader"/>.</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("XPathReader", "1.0.0.0")]
         private static global::XPathReader.Common.XPathReader? __fTestClass;
         
+        /// <remarks>
+        /// Looks for the following XPath(s):<br/>
+        /// <code>
+        /// ○ /root/child[1]
+        /// </code>
+        /// </remarks>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("XPathReader", "1.0.0.0")]
         public static partial global::XPathReader.Common.XPathReader CreateReader()
         {
@@ -26,10 +33,12 @@ namespace XPathReader.Generated
     using System.CodeDom.Compiler;
     using System.Runtime.CompilerServices;
     using XPathReader.Common;
+    using XPathReader.Common.Internal;
     
     [GeneratedCodeAttribute("XPathReader", "1.0.0.0")]
     file sealed class TestClass : XPathReader
     {
+        /// <inheritdoc/>
         protected override IEnumerable<ReadResult> ReadInternal(XmlReader reader)
         {
             using (reader)
@@ -101,6 +110,7 @@ namespace XPathReader.Generated
             }
         }
 
+        /// <inheritdoc/>
         protected override async IAsyncEnumerable<ReadResult> ReadInternalAsync(XmlReader reader, [EnumeratorCancellation]CancellationToken cancellationToken)
         {
             using (reader)
