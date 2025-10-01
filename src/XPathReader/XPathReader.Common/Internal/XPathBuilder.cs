@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics.Contracts;
+using System.Text;
 
 namespace XPathReader.Common.Internal
 {
@@ -36,6 +37,7 @@ namespace XPathReader.Common.Internal
         }
 
         /// <inheritdoc/>
+        [Pure]
         public string GetXPath()
         {
             return _builder.ToString();

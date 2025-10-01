@@ -25,9 +25,10 @@ namespace XPathReader.Tests.Smoke_Tests
             Assert.That(firstInstance, Is.SameAs(secondInstance));
             List<string> regions = [];
             List<string> companies = [];
-            byte languagesCount = 0;
-            foreach (var result in UkraineXmlReader().Read(testFile))
+            List<PersistedReadResult> languages = [];
+            foreach (ReadResult result in UkraineXmlReader().Read(testFile))
             {
+                Assert.That(result.NodeReader.NameTable, Is.InstanceOf<ThreadSafeNameTable>());
                 switch (result.RequestedXPath)
                 {
                     case "/ukraine/geography/regions/region/name":
@@ -39,14 +40,12 @@ namespace XPathReader.Tests.Smoke_Tests
                         Assert.That(result.ActualXPath.GetXPath(), Is.EqualTo($"/ukraine/economy[1]/sectors[1]/sector[2]/companies[1]/company[{companies.Count}]"));
                         break;
                     case "/ukraine/culture/languages/language":
-                        languagesCount++;
+                        languages.Add(result.ToPersistedResult());
                         break;
                     default:
                         Assert.Fail("Unexpected XPath: " + result.RequestedXPath);
                         break;
                 }
-
-                Assert.That(result.NodeReader.NameTable, Is.InstanceOf<ThreadSafeNameTable>());
             }
 
             Assert.That(regions, Has.Count.EqualTo(2));
@@ -63,7 +62,7 @@ namespace XPathReader.Tests.Smoke_Tests
                 <name>GitLab</name>
                 """).IgnoreWhiteSpace);
 
-            Assert.That(languagesCount, Is.EqualTo(4));
+            Assert.That(languages, Has.Count.EqualTo(4));
         }
 
         [Test]
@@ -73,9 +72,11 @@ namespace XPathReader.Tests.Smoke_Tests
 
             List<string> regions = [];
             List<string> companies = [];
-            byte languagesCount = 0;
-            await foreach (var result in UkraineXmlReader().ReadAsync(testFile))
+            List<PersistedReadResult> languages = [];
+            await foreach (ReadResult result in UkraineXmlReader().ReadAsync(testFile))
             {
+                Assert.That(result.NodeReader.NameTable, Is.InstanceOf<ThreadSafeNameTable>());
+
                 switch (result.RequestedXPath)
                 {
                     case "/ukraine/geography/regions/region/name":
@@ -90,14 +91,12 @@ namespace XPathReader.Tests.Smoke_Tests
                         Assert.That(result.ActualXPath.GetXPath(), Is.EqualTo($"/ukraine/economy[1]/sectors[1]/sector[2]/companies[1]/company[{companies.Count}]"));
                         break;
                     case "/ukraine/culture/languages/language":
-                        languagesCount++;
+                        languages.Add(await result.ToPersistedResultAsync());
                         break;
                     default:
                         Assert.Fail("Unexpected XPath: " + result.RequestedXPath);
                         break;
                 }
-
-                Assert.That(result.NodeReader.NameTable, Is.InstanceOf<ThreadSafeNameTable>());
             }
 
             Assert.That(regions, Has.Count.EqualTo(2));
@@ -114,7 +113,7 @@ namespace XPathReader.Tests.Smoke_Tests
                 <name>GitLab</name>
                 """).IgnoreWhiteSpace);
 
-            Assert.That(languagesCount, Is.EqualTo(4));
+            Assert.That(languages, Has.Count.EqualTo(4));
         }
     }
 }
