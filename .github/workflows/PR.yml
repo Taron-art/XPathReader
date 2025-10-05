@@ -37,4 +37,4 @@ jobs:
       
     # Execute all unit tests in the solution
     - name: Execute unit tests
-      run: dotnet test src\XPathReader\ -c ${{ matrix.configuration}} -p:Platform=${{ matrix.platform }}
+      run: dotnet test src\XPathReader -c ${{ matrix.configuration}} -p:Platform=${{ matrix.platform }}
