@@ -20,6 +20,8 @@
 	<PackageTags>xml;xpath;source generation</PackageTags>
 	<Description>Allows to generate source that uses XmlReader to read a XML document and returns entries related to provided XPaths.</Description>
 	<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageProjectUrl>https://github.com/Taron-art/XPathReader</PackageProjectUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
@@ -69,6 +71,10 @@
 		<None Include="$(OutputPath)\netstandard2.1\XPathReader.Common.dll" Pack="true" PackagePath="lib/netstandard2.1" Visible="false" />
 		<None Include="$(OutputPath)\netstandard2.1\XPathReader.Common.xml" Pack="true" PackagePath="lib/netstandard2.1" Visible="false" />
 		<None Include="..\..\..\LICENSE">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\..\..\README.md">
 		  <Pack>True</Pack>
 		  <PackagePath>\</PackagePath>
 		</None>
