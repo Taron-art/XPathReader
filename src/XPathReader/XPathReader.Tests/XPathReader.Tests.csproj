@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -10,6 +10,7 @@
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>..\xpathreader.snk</AssemblyOriginatorKeyFile>
 	<LangVersion>13.0</LangVersion>
+	<RootNamespace>ARTX.XPathReader.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,14 +27,14 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="NUnit3TestAdapter" Version="5.1.0" />
-    <PackageReference Include="Verify" Version="30.12.0" />
-    <PackageReference Include="Verify.NUnit" Version="30.12.0" />
+    <PackageReference Include="Verify" Version="30.19.2" />
+    <PackageReference Include="Verify.NUnit" Version="30.19.2" />
     <PackageReference Include="Verify.SourceGenerators" Version="2.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\XPathReader.Common\XPathReader.Common.csproj" />
-    <ProjectReference Include="..\XPathReader\XPathReader.csproj" OutputItemType="Analyzer" />
+    <ProjectReference Include="..\XPathReader\XPathReader.csproj" OutputItemType="Analyzer" SetTargetFramework="TargetFramework=netstandard2.0" />
   </ItemGroup>
 
   <ItemGroup>

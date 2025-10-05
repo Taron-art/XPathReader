@@ -1,4 +1,4 @@
-﻿namespace XPathReader.Tests
+﻿namespace ARTX.XPathReader.Tests
 {
     [TestFixture]
     [TestOf(typeof(XPathReaderGenerator))]
@@ -12,7 +12,7 @@
                 namespace XPathReader.TestInterface
                 {
                     using System;
-                    using XPathReader.Common;
+                    using ARTX.XPath;
 
                     interface ITestClass
                     {
@@ -34,7 +34,7 @@
                 namespace XPathReader.TestInterface
                 {
                     using System;
-                    using XPathReader.Common;
+                    using ARTX.XPath;
 
                     public readonly struct ITestClass
                     {

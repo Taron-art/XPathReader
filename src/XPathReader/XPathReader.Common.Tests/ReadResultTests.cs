@@ -1,8 +1,9 @@
 ﻿using System.Xml;
 using System.Xml.Linq;
+using ARTX.XPath;
 using FakeItEasy;
 
-namespace XPathReader.Common.Tests
+namespace ARTX.Common.Tests
 {
     [TestFixture]
     [TestOf(typeof(ReadResult))]

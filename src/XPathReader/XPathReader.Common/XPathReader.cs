@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Xml;
-using XPathReader.Common.Internal;
+using ARTX.XPath.Internal;
 
-namespace XPathReader.Common
+namespace ARTX.XPath
 {
     /// <summary>
     /// Represents immutable, thread-safe XML reader based on the provided XPaths.

@@ -1,4 +1,4 @@
-﻿namespace XPathReader.XPathParsing
+﻿namespace ARTX.XPathReader.XPathParsing
 {
     public sealed class XPathTree
     {

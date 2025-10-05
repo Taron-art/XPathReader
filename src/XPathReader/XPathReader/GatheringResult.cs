@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 
-namespace XPathReader
+namespace ARTX.XPathReader
 {
     internal sealed record GatheringResult(XPathReaderDataToGenerate? XPathToGenerate, DiagnosticData? DiagnosticData);
 

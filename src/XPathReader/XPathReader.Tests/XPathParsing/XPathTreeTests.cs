@@ -1,6 +1,6 @@
-﻿using XPathReader.XPathParsing;
+﻿using ARTX.XPathReader.XPathParsing;
 
-namespace XPathReader.Tests.XPathParsing
+namespace ARTX.XPathReader.Tests.XPathParsing
 {
     [TestFixture]
     [TestOf(typeof(XPathTree))]
