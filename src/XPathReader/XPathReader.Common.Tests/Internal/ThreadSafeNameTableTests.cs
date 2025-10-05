@@ -1,4 +1,4 @@
-﻿using XPathReader.Common.Internal;
+﻿using ARTX.XPath.Internal;
 
 namespace XPathReader.Common.Tests.Internal
 {

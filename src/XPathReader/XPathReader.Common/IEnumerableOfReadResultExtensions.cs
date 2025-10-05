@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace XPathReader.Common
+namespace ARTX.XPath
 {
     /// <summary>
     /// Contains extensions for <see cref="IEnumerable{ReadResult}"/> and <see cref="IAsyncEnumerable{ReadResult}"/>.

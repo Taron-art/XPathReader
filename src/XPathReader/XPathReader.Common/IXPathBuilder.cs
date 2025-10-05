@@ -1,4 +1,4 @@
-﻿namespace XPathReader.Common
+﻿namespace ARTX.XPath
 {
     /// <summary>
     /// Represents a builder for constructing XPath expressions.

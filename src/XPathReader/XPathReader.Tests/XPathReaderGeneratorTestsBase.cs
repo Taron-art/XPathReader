@@ -2,7 +2,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace XPathReader.Tests
+namespace ARTX.XPathReader.Tests
 {
     public class XPathReaderGeneratorTestsBase
     {
@@ -12,7 +12,7 @@ namespace XPathReader.Tests
 
             IEnumerable<PortableExecutableReference> references =
             [
-                MetadataReference.CreateFromFile(typeof(Common.XPathReader).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(ARTX.XPath.XPathReader).Assembly.Location),
             ];
 
             // Create a Roslyn compilation for the syntax tree.

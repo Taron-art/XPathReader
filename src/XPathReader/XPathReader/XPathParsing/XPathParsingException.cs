@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace XPathReader.XPathParsing
+﻿namespace ARTX.XPathReader.XPathParsing
 {
     public class XPathParsingException : Exception
     {

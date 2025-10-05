@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 
-namespace XPathReader.Common.Internal
+namespace ARTX.XPath.Internal
 {
     /// <summary>
     /// Thread safe implementation of <see cref="NameTable"/>.

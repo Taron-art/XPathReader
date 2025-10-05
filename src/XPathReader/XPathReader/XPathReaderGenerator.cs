@@ -5,15 +5,16 @@ using ILLink.RoslynAnalyzer;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using XPathReader;
 using XPathReader.Utils;
 
-namespace XPathReader
+namespace ARTX.XPathReader
 {
     [Generator(LanguageNames.CSharp)]
     public partial class XPathReaderGenerator : IIncrementalGenerator
     {
-        private const string AttributeName = "XPathReader.Common.GeneratedXPathReaderAttribute";
-        private const string XPathReaderName = "XPathReader.Common.XPathReader";
+        private const string AttributeName = "ARTX.XPath.GeneratedXPathReaderAttribute";
+        private const string XPathReaderName = "ARTX.XPath.XPathReader";
 
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
@@ -102,7 +103,7 @@ namespace XPathReader
                     }
                 }
 
-                if (!memberSymbol.IsStatic && (memberSyntax.Parent is InterfaceDeclarationSyntax || (memberSyntax.Parent is StructDeclarationSyntax structDeclaration && structDeclaration.Modifiers.FirstOrDefault(token => token.IsKind(SyntaxKind.ReadOnlyKeyword)) != default)))
+                if (!memberSymbol.IsStatic && (memberSyntax.Parent is InterfaceDeclarationSyntax || memberSyntax.Parent is StructDeclarationSyntax structDeclaration && structDeclaration.Modifiers.FirstOrDefault(token => token.IsKind(SyntaxKind.ReadOnlyKeyword)) != default))
                 {
                     return new GatheringResult(null, new DiagnosticData(Diagnostics.XPathReaderMemberMustHaveValidSignature, GetComparableLocation(memberSyntax)));
                 }
