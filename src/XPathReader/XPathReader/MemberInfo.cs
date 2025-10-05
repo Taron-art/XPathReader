@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace XPathReader
+﻿namespace ARTX.XPathReader
 {
     internal sealed record MemberInfo(string Keyword, string Namespace, string Name)
     {

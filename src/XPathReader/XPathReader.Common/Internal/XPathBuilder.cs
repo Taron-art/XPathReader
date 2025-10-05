@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Text;
 
-namespace XPathReader.Common.Internal
+namespace ARTX.XPath.Internal
 {
     /// <summary>
     /// Provides a utility for building XPath expressions dynamically.

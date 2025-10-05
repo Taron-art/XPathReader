@@ -1,6 +1,6 @@
-﻿using XPathReader.XPathParsing;
+﻿using ARTX.XPathReader.XPathParsing;
 
-namespace XPathReader.Tests.XPathParsing
+namespace ARTX.XPathReader.Tests.XPathParsing
 {
     [TestFixture]
     [TestOf(typeof(XPathParser))]
@@ -149,7 +149,7 @@ namespace XPathReader.Tests.XPathParsing
             using (Assert.EnterMultipleScope())
             {
                 Assert.That(_parser.NonErrorDiagnostics, Has.Count.EqualTo(1));
-                Assert.That(_parser.NonErrorDiagnostics[0].Descriptor, Is.EqualTo(XPathReader.Diagnostics.ContainsDuplicates));
+                Assert.That(_parser.NonErrorDiagnostics[0].Descriptor, Is.EqualTo(Diagnostics.ContainsDuplicates));
 
                 object[]? args = _parser.NonErrorDiagnostics[0].Args;
                 Assert.That(args, Is.Not.Null);
