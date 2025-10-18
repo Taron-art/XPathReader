@@ -73,13 +73,13 @@ jobs:
       
         # Derive VersionSuffix based on branch patterns
         $shortSha = $env:GITHUB_SHA.Substring(0,8)
-        if ($branch -eq 'develop')
+        if ($branch -eq 'main')
         {
-          $versionSuffix = 'beta'
+          $versionSuffix = ''
         }
         else
         {
-          $versionPrefix = ''
+          $versionPrefix = 'beta'
         }
       
         Write-Host "Computed VersionPrefix: $versionPrefix"
