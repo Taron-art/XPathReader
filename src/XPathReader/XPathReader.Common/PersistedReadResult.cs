@@ -21,8 +21,9 @@ namespace ARTX.XPath
         /// <param name="actualXPath">The actual XPath encountered during the read operation.</param>
         /// <param name="node">The <see cref="XElement"/> with the XML node associated with the result.</param>
         /// <param name="requestedXPath">The XPath expression that was requested for the read operation.</param>
+        /// <param name="elementLocalName">Found element local name.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="actualXPath"/>, <paramref name="node"/>, <paramref name="requestedXPath"/>.</exception>
-        public PersistedReadResult(string actualXPath, XElement node, string requestedXPath)
+        public PersistedReadResult(string actualXPath, XElement node, string requestedXPath, string elementLocalName)
         {
             if (actualXPath is null)
             {
@@ -39,9 +40,15 @@ namespace ARTX.XPath
                 throw new ArgumentNullException(nameof(requestedXPath));
             }
 
+            if (elementLocalName is null)
+            {
+                throw new ArgumentNullException(nameof(elementLocalName));
+            }
+
             ActualXPath = actualXPath;
             Node = node;
             _requestedXPath = requestedXPath;
+            ElementLocalName = elementLocalName;
         }
 
         /// <summary>
@@ -50,9 +57,10 @@ namespace ARTX.XPath
         /// <param name="actualXPath">The actual XPath encountered during the read operation.</param>
         /// <param name="node">The <see cref="XElement"/> with the XML node associated with the result.</param>
         /// <param name="requestedXPaths">The XPath expressions that was requested for the read operation.</param>
+        /// <param name="elementLocalName">Found element local name.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="actualXPath"/>, <paramref name="node"/>, <paramref name="requestedXPaths"/>.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="requestedXPaths"/> is empty.</exception>
-        public PersistedReadResult(string actualXPath, XElement node, string[] requestedXPaths)
+        public PersistedReadResult(string actualXPath, XElement node, string[] requestedXPaths, string elementLocalName)
         {
             if (actualXPath is null)
             {
@@ -74,10 +82,21 @@ namespace ARTX.XPath
                 throw new ArgumentException("Value cannot be an empty collection.", nameof(requestedXPaths));
             }
 
+            if (elementLocalName is null)
+            {
+                throw new ArgumentNullException(nameof(elementLocalName));
+            }
+
             ActualXPath = actualXPath;
             Node = node;
             _requestedXPaths = requestedXPaths;
+            ElementLocalName = elementLocalName;
         }
+
+        /// <summary>
+        /// Found element local name.
+        /// </summary>
+        public string ElementLocalName { get; }
 
         /// <summary>
         /// The XPath expressions that was requested for the read operation.
