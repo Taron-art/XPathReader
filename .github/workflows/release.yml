@@ -79,7 +79,7 @@ jobs:
         }
         else
         {
-          $versionPrefix = 'beta'
+          $versionSuffix = 'beta'
         }
       
         Write-Host "Computed VersionPrefix: $versionPrefix"
