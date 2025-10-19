@@ -83,7 +83,7 @@ namespace ARTX.XPath.Generated
                                         
                                         XmlReader localReader = reader.ReadSubtree();
                                         localReader.MoveToContent();
-                                        yield return new ReadResult(currentXPathBuilder, localReader, "/root/child1");
+                                        yield return new ReadResult(currentXPathBuilder, localReader, "/root/child1", "child1");
                                         localReader.Dispose();
                                         
                                         currentXPathBuilder.Length = originalLength00000007;
@@ -96,7 +96,7 @@ namespace ARTX.XPath.Generated
                                         
                                         XmlReader localReader = reader.ReadSubtree();
                                         localReader.MoveToContent();
-                                        yield return new ReadResult(currentXPathBuilder, localReader, "/root/child");
+                                        yield return new ReadResult(currentXPathBuilder, localReader, "/root/child", "child");
                                         localReader.Dispose();
                                         
                                         currentXPathBuilder.Length = originalLength00000008;
@@ -109,7 +109,7 @@ namespace ARTX.XPath.Generated
                                         
                                         XmlReader localReader = reader.ReadSubtree();
                                         localReader.MoveToContent();
-                                        yield return new ReadResult(currentXPathBuilder, localReader, "/root/child.important");
+                                        yield return new ReadResult(currentXPathBuilder, localReader, "/root/child.important", "child.important");
                                         localReader.Dispose();
                                         
                                         currentXPathBuilder.Length = originalLength00000009;
@@ -133,7 +133,7 @@ namespace ARTX.XPath.Generated
                                                     
                                                     XmlReader localReader = reader.ReadSubtree();
                                                     localReader.MoveToContent();
-                                                    yield return new ReadResult(currentXPathBuilder, localReader, "/root/child-3/grandchild1");
+                                                    yield return new ReadResult(currentXPathBuilder, localReader, "/root/child-3/grandchild1", "grandchild1");
                                                     localReader.Dispose();
                                                     
                                                     currentXPathBuilder.Length = originalLength0000000c;
@@ -230,7 +230,7 @@ namespace ARTX.XPath.Generated
                                         XmlReader localReader = reader.ReadSubtree();
                                         cancellationToken.ThrowIfCancellationRequested();
                                         await localReader.MoveToContentAsync().ConfigureAwait(false);
-                                        yield return new ReadResult(currentXPathBuilder, localReader, "/root/child1");
+                                        yield return new ReadResult(currentXPathBuilder, localReader, "/root/child1", "child1");
                                         localReader.Dispose();
                                         
                                         currentXPathBuilder.Length = originalLength00000007;
@@ -244,7 +244,7 @@ namespace ARTX.XPath.Generated
                                         XmlReader localReader = reader.ReadSubtree();
                                         cancellationToken.ThrowIfCancellationRequested();
                                         await localReader.MoveToContentAsync().ConfigureAwait(false);
-                                        yield return new ReadResult(currentXPathBuilder, localReader, "/root/child");
+                                        yield return new ReadResult(currentXPathBuilder, localReader, "/root/child", "child");
                                         localReader.Dispose();
                                         
                                         currentXPathBuilder.Length = originalLength00000008;
@@ -258,7 +258,7 @@ namespace ARTX.XPath.Generated
                                         XmlReader localReader = reader.ReadSubtree();
                                         cancellationToken.ThrowIfCancellationRequested();
                                         await localReader.MoveToContentAsync().ConfigureAwait(false);
-                                        yield return new ReadResult(currentXPathBuilder, localReader, "/root/child.important");
+                                        yield return new ReadResult(currentXPathBuilder, localReader, "/root/child.important", "child.important");
                                         localReader.Dispose();
                                         
                                         currentXPathBuilder.Length = originalLength00000009;
@@ -283,7 +283,7 @@ namespace ARTX.XPath.Generated
                                                     XmlReader localReader = reader.ReadSubtree();
                                                     cancellationToken.ThrowIfCancellationRequested();
                                                     await localReader.MoveToContentAsync().ConfigureAwait(false);
-                                                    yield return new ReadResult(currentXPathBuilder, localReader, "/root/child-3/grandchild1");
+                                                    yield return new ReadResult(currentXPathBuilder, localReader, "/root/child-3/grandchild1", "grandchild1");
                                                     localReader.Dispose();
                                                     
                                                     currentXPathBuilder.Length = originalLength0000000c;

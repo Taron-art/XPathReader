@@ -25,7 +25,8 @@ namespace ARTX.XPath
         /// <param name="actualXPath">The <see cref="IXPathBuilder"/> instance representing the actual XPath encountered during the read operation.</param>
         /// <param name="nodeReader">The <see cref="XmlReader"/> to read the XML node associated with the result.</param>
         /// <param name="requestedXPath">The XPath expression that was requested for the read operation.</param>
-        public ReadResult(IXPathBuilder actualXPath, XmlReader nodeReader, string requestedXPath)
+        /// <param name="elementLocalName">Found element local name.</param>
+        public ReadResult(IXPathBuilder actualXPath, XmlReader nodeReader, string requestedXPath, string elementLocalName)
         {
             if (actualXPath is null)
             {
@@ -42,9 +43,15 @@ namespace ARTX.XPath
                 throw new ArgumentNullException(nameof(requestedXPath));
             }
 
+            if (elementLocalName is null)
+            {
+                throw new ArgumentNullException(nameof(elementLocalName));
+            }
+
             ActualXPath = actualXPath;
             _nodeReader = nodeReader;
             _requestedXPath = requestedXPath;
+            ElementLocalName = elementLocalName;
         }
 
         /// <summary>
@@ -53,7 +60,8 @@ namespace ARTX.XPath
         /// <param name="actualXPath">The <see cref="IXPathBuilder"/> instance representing the actual XPath encountered during the read operation.</param>
         /// <param name="nodeReader">The <see cref="XmlReader"/> to read the XML node associated with the result.</param>
         /// <param name="requestedXPaths">The XPath expressions that was requested for the read operation.</param>
-        public ReadResult(IXPathBuilder actualXPath, XmlReader nodeReader, string[] requestedXPaths)
+        /// <param name="elementLocalName">Found element local name.</param>
+        public ReadResult(IXPathBuilder actualXPath, XmlReader nodeReader, string[] requestedXPaths, string elementLocalName)
         {
             if (actualXPath is null)
             {
@@ -75,9 +83,23 @@ namespace ARTX.XPath
                 throw new ArgumentException("Value cannot be an empty collection.", nameof(requestedXPaths));
             }
 
+            if (elementLocalName is null)
+            {
+                throw new ArgumentNullException(nameof(elementLocalName));
+            }
+
             ActualXPath = actualXPath;
             _nodeReader = nodeReader;
             _requestedXPaths = requestedXPaths;
+            ElementLocalName = elementLocalName;
+        }
+
+        /// <summary>
+        /// Found element local name.
+        /// </summary>
+        public string ElementLocalName
+        {
+            get;
         }
 
         /// <summary>
@@ -174,11 +196,11 @@ namespace ARTX.XPath
         {
             if (_requestedXPaths is not null)
             {
-                return new PersistedReadResult(ActualXPath.GetXPath(), xElement, _requestedXPaths);
+                return new PersistedReadResult(ActualXPath.GetXPath(), xElement, _requestedXPaths, ElementLocalName);
             }
             else
             {
-                return new PersistedReadResult(ActualXPath.GetXPath(), xElement, RequestedXPath);
+                return new PersistedReadResult(ActualXPath.GetXPath(), xElement, RequestedXPath, ElementLocalName);
             }
         }
     }
