@@ -21,7 +21,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Compute VersionPrefix and VersionSuffix
+    - name: Extract branch, compute VersionPrefix and VersionSuffix
       shell: pwsh
       env:
         GITHUB_RUN_NUMBER: ${{ github.run_number }}
