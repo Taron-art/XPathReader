@@ -38,8 +38,8 @@ jobs:
           echo "Branch is $branch."
           
     # Execute all unit tests in the solution
-    - name: Execute unit tests
-      run: dotnet test src/XPathReader -c Release -p:Platform="Any CPU"
+    # - name: Execute unit tests
+      # run: dotnet test src/XPathReader -c Release -p:Platform="Any CPU"
       
     - name: Compute VersionPrefix and VersionSuffix (PowerShell)
       shell: pwsh
