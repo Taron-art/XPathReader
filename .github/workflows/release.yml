@@ -21,7 +21,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Compute VersionPrefix and VersionSuffix
+    - name: Extract branch, compute VersionPrefix and VersionSuffix
       shell: pwsh
       env:
         GITHUB_RUN_NUMBER: ${{ github.run_number }}
@@ -38,19 +38,22 @@ jobs:
         $versionPrefix = if ($tagName.StartsWith('v')) { $tagName.Substring(1) } else { $tagName }
       
         # Sanitize just in case: strip any prerelease part if present (but prerelease is derived from branch only)
-        if ($versionPrefix -match '-') {
+        if ($versionPrefix -match '-') 
+        {
           $versionPrefix = $versionPrefix.Split('-')[0]
         }
       
         # Determine branch name to derive prerelease suffix
-        $branch = $env:GITHUB_HEAD_REF
-        if ([string]::IsNullOrEmpty($branch)) {
-          $branch = $env:GITHUB_REF_NAME
-        }
-        if ([string]::IsNullOrEmpty($branch)) {
+        $raw = (git branch -r --contains $env:GITHUB_REF) -split "`n" | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne '' } | Select-Object -First 1
+        $branch = if ($raw) { ($raw -split '/')[ -1 ] } else { '' }
+        
+        if ([string]::IsNullOrEmpty($branch)) 
+        {
           throw "branch not found"
         }
-      
+        
+        Write-Output "Branch is $branch."
+        
         # Derive VersionSuffix based on branch patterns
         $shortSha = $env:GITHUB_SHA.Substring(0,8)
         if ($branch -eq 'main')
@@ -63,7 +66,7 @@ jobs:
         }
         else
         {
-          Throw "Branch $branch is not supported for release creation"
+          throw "Branch $branch is not supported for release creation"
         }
       
         Write-Host "Computed VersionPrefix: $versionPrefix"
@@ -72,7 +75,7 @@ jobs:
         # Export for later steps
         echo "VERSION_PREFIX=$versionPrefix" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
         echo "VERSION_SUFFIX=$versionSuffix" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-      
+        Add-Content -Path $env:GITHUB_OUTPUT -Value "branch=$branch"
     
     # Install the .NET Core workload
     - name: Install .NET Core
@@ -81,15 +84,6 @@ jobs:
         dotnet-version: | 
           8.0.x
           9.0.x
-          
-    - name: Get source branch of tag
-      id: source
-      shell: bash
-      run: |
-          raw=$(git branch -r --contains ${{ github.ref }})
-          branch=${raw##*/}
-          echo "branch=$branch" >> $GITHUB_OUTPUT
-          echo "Branch is $branch."
           
     # Execute all unit tests in the solution
     - name: Execute unit tests
