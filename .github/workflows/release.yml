@@ -99,6 +99,7 @@ jobs:
     
     - name: Add the created package to test project and run tests
       shell: pwsh
+      env:
           VERSION_PREFIX: ${{ env.VERSION_PREFIX }}
           VERSION_SUFFIX: ${{ env.VERSION_SUFFIX }}
       run: |
