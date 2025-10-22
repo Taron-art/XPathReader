@@ -85,6 +85,7 @@ namespace ARTX.XPath.Generated
                                         localReader.MoveToContent();
                                         yield return new ReadResult(currentXPathBuilder, localReader, "/root/child1[1]", "child1");
                                         localReader.Dispose();
+                                        reader.Read();
                                         
                                         currentXPathBuilder.Length = originalLength00000007;
                                     }
@@ -98,6 +99,7 @@ namespace ARTX.XPath.Generated
                                         localReader.MoveToContent();
                                         yield return new ReadResult(currentXPathBuilder, localReader, "/root/child[ready()]", "child");
                                         localReader.Dispose();
+                                        reader.Read();
                                         
                                         currentXPathBuilder.Length = originalLength00000008;
                                     }
@@ -111,6 +113,7 @@ namespace ARTX.XPath.Generated
                                         localReader.MoveToContent();
                                         yield return new ReadResult(currentXPathBuilder, localReader, "/root/child.important[1]", "child.important");
                                         localReader.Dispose();
+                                        reader.Read();
                                         
                                         currentXPathBuilder.Length = originalLength00000009;
                                     }
@@ -135,6 +138,7 @@ namespace ARTX.XPath.Generated
                                                     localReader.MoveToContent();
                                                     yield return new ReadResult(currentXPathBuilder, localReader, "/root/child-3[@attribute]/grandchild1[name]", "grandchild1");
                                                     localReader.Dispose();
+                                                    reader.Read();
                                                     
                                                     currentXPathBuilder.Length = originalLength0000000c;
                                                 }
@@ -232,6 +236,8 @@ namespace ARTX.XPath.Generated
                                         await localReader.MoveToContentAsync().ConfigureAwait(false);
                                         yield return new ReadResult(currentXPathBuilder, localReader, "/root/child1[1]", "child1");
                                         localReader.Dispose();
+                                        cancellationToken.ThrowIfCancellationRequested();
+                                        await reader.ReadAsync().ConfigureAwait(false);
                                         
                                         currentXPathBuilder.Length = originalLength00000007;
                                     }
@@ -246,6 +252,8 @@ namespace ARTX.XPath.Generated
                                         await localReader.MoveToContentAsync().ConfigureAwait(false);
                                         yield return new ReadResult(currentXPathBuilder, localReader, "/root/child[ready()]", "child");
                                         localReader.Dispose();
+                                        cancellationToken.ThrowIfCancellationRequested();
+                                        await reader.ReadAsync().ConfigureAwait(false);
                                         
                                         currentXPathBuilder.Length = originalLength00000008;
                                     }
@@ -260,6 +268,8 @@ namespace ARTX.XPath.Generated
                                         await localReader.MoveToContentAsync().ConfigureAwait(false);
                                         yield return new ReadResult(currentXPathBuilder, localReader, "/root/child.important[1]", "child.important");
                                         localReader.Dispose();
+                                        cancellationToken.ThrowIfCancellationRequested();
+                                        await reader.ReadAsync().ConfigureAwait(false);
                                         
                                         currentXPathBuilder.Length = originalLength00000009;
                                     }
@@ -285,6 +295,8 @@ namespace ARTX.XPath.Generated
                                                     await localReader.MoveToContentAsync().ConfigureAwait(false);
                                                     yield return new ReadResult(currentXPathBuilder, localReader, "/root/child-3[@attribute]/grandchild1[name]", "grandchild1");
                                                     localReader.Dispose();
+                                                    cancellationToken.ThrowIfCancellationRequested();
+                                                    await reader.ReadAsync().ConfigureAwait(false);
                                                     
                                                     currentXPathBuilder.Length = originalLength0000000c;
                                                 }
