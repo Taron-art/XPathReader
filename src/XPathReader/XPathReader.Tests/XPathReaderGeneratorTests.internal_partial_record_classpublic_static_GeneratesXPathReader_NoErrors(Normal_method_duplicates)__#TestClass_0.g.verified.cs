@@ -75,6 +75,7 @@ namespace ARTX.XPath.Generated
                                         localReader.MoveToContent();
                                         yield return new ReadResult(currentXPathBuilder, localReader, new string[] { "/root/child[1]", "/root/child[1]" }, "child");
                                         localReader.Dispose();
+                                        reader.Read();
                                         
                                         currentXPathBuilder.Length = originalLength00000004;
                                     }
@@ -149,6 +150,8 @@ namespace ARTX.XPath.Generated
                                         await localReader.MoveToContentAsync().ConfigureAwait(false);
                                         yield return new ReadResult(currentXPathBuilder, localReader, new string[] { "/root/child[1]", "/root/child[1]" }, "child");
                                         localReader.Dispose();
+                                        cancellationToken.ThrowIfCancellationRequested();
+                                        await reader.ReadAsync().ConfigureAwait(false);
                                         
                                         currentXPathBuilder.Length = originalLength00000004;
                                     }
