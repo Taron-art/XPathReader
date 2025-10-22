@@ -1,3 +1,5 @@
+using ARTX.XPathReader.Utils;
+
 namespace XPathReader.Utils
 {
     public class TwoXmlReaderTextIntendedTextWriterProxy : IXmlReaderTextIntendedTextWriter

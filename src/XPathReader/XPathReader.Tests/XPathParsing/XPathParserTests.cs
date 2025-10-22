@@ -70,7 +70,6 @@ namespace ARTX.XPathReader.Tests.XPathParsing
             yield return new TestCaseData<string, XPathTree>("/root/a[1]|/root/b[node()]|/root/c[@attribute]", expectedTree);
         }
 
-        [Test]
         [TestCaseSource(nameof(MultipleXPathsTestCases))]
         public void Parse_MultipleXPaths_CreatesCorrectTree(string xPaths, XPathTree expected)
         {
@@ -81,7 +80,6 @@ namespace ARTX.XPathReader.Tests.XPathParsing
             Assert.That(result, Is.EqualTo(expected).UsingPropertiesComparer());
         }
 
-        [Test]
         [TestCase("/root/test1|/root/test1")]
         [TestCase("/root/test1\n/root/test1")]
         public void Parse_DuplicateXPaths_Duplicates(string xpaths)
@@ -184,7 +182,6 @@ namespace ARTX.XPathReader.Tests.XPathParsing
             Assert.That(ex.Message, Does.Contain(expectedMessage));
         }
 
-        [Test]
         [TestCase("/root/child|/different/child")]
         public void Parse_DifferentRoots_ThrowsException(string xPaths)
         {
@@ -192,13 +189,14 @@ namespace ARTX.XPathReader.Tests.XPathParsing
             Assert.That(ex.Message, Does.Contain("different root"));
         }
 
-        [Test]
         [TestCase("/root|/root/child")]
         public void Parse_ConflictingDepths_ThrowsException(string xPaths)
         {
             var ex = Assert.Throws<UnsupportedXPathException>(() => _parser.Parse(xPaths));
             Assert.That(ex.Message, Does.Contain("deeper path"));
         }
+
+
 
         [Test]
         public void Parse_DiagnosticsAreClearedBetweenCalls()
@@ -212,6 +210,28 @@ namespace ARTX.XPathReader.Tests.XPathParsing
 
             // Assert
             Assert.That(_parser.NonErrorDiagnostics, Is.Empty);
+        }
+
+        [Test]
+        public void Parse_LongXPath_ProcessesSuccessfully()
+        {
+
+            string longXPath = "/root" + string.Concat(Enumerable.Range(1, XPathParser.MaxSupportedDepth - 1).Select(i => $"/child{i}"));
+
+            (XPathTree Tree, HashSet<string> XPaths) result = _parser.Parse(longXPath);
+
+            Assert.That(GetAllXPaths(result.Tree), Has.Member(longXPath));
+        }
+
+        [Test]
+        public void Parse_ToLongXPath_ThrowsUnsupportedException()
+        {
+            string longXPath = "/root" + string.Concat(Enumerable.Range(1, XPathParser.MaxSupportedDepth).Select(i => $"/child{i}"));
+
+            var exception = Assert.Throws<UnsupportedXPathException>(() => _parser.Parse(longXPath));
+
+            Assert.That(exception.Message, Does.Contain("maximum supported depth"));
+            Assert.That(exception.XPath, Is.SameAs(longXPath));
         }
 
 

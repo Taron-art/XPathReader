@@ -12,7 +12,7 @@ namespace PackageUsage.Tests
     public partial class GeneratedCodeTests
     {
         [GeneratedXPathReader("/bookstore/title")]
-        public partial XPathReader GetReader();
+        private partial XPathReader GetReader();
 
         [Test]
         public void XPathReader_GetReader_ReturnsReaderOfCurrentVersion()

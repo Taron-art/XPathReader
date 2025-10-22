@@ -1,6 +1,6 @@
 ﻿using System.Text;
+using ARTX.XPathReader.Utils;
 using ARTX.XPathReader.XPathParsing;
-using XPathReader.Utils;
 
 namespace ARTX.XPathReader
 {
