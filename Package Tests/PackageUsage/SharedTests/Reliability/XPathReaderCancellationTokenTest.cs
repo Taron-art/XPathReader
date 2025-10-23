@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Xml;
 using ARTX.XPath;
 using NUnit.Framework;
 
@@ -48,7 +46,7 @@ namespace SharedTests.Reliability
             CancellationTokenSource cts = new();
             cts.CancelAfter(TimeSpan.FromMilliseconds(200));
 
-            Assert.ThrowsAsync<OperationCanceledException>(async () =>
+            Assert.ThrowsAsync(Is.AssignableFrom<OperationCanceledException>(), async () =>
             {
                 while (!testTimeoutToken.IsCancellationRequested)
                 {

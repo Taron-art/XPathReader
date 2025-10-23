@@ -17,12 +17,11 @@ namespace SharedTests.Functionality
         [Test]
         public void XPathReader_Supports64DepthXml()
         {
-            // Arrange
             const int depth = 64;
             const int leaves = 8;
             string xmlContent = Utils.XmlGenerator.GenerateXml(depth, leaves);
             byte[] xmlBytes = Encoding.UTF8.GetBytes(xmlContent);
-            // Act & Assert
+
             Assert.DoesNotThrow(() =>
             {
                 using var stream = new MemoryStream(xmlBytes);
