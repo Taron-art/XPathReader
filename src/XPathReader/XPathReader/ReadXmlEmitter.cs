@@ -1,6 +1,6 @@
 ﻿using System.Text;
+using ARTX.XPathReader.Utils;
 using ARTX.XPathReader.XPathParsing;
-using XPathReader.Utils;
 
 namespace ARTX.XPathReader
 {
@@ -91,8 +91,11 @@ namespace ARTX.XPathReader
                 var group = groupsByName[i];
                 string originalLengthVariableName = $"originalLength{++_variableIndex:x8}";
 
+                // If we are not in the leaf, we do not care about empty elements.
+                bool checkForEmptyElement = !group.OfType<XPathTreeLeafElement>().Any();
+
                 writer.WriteLine(
-                    $"{(i == 0 ? "" : "else ")}if (ReferenceEquals(reader.LocalName, {_variableStorage[group.Key.LocalName]}))");
+                    $"{(i == 0 ? "" : "else ")}if ((ReferenceEquals(reader.LocalName, {_variableStorage[group.Key.LocalName]})){(checkForEmptyElement ? " && !reader.IsEmptyElement" : "")})");
                 writer.OpenBrace();
 
                 writer.WriteLine($"++{counterVariables[index]};");

@@ -1,4 +1,6 @@
-﻿namespace XPathReader.Utils
+﻿using XPathReader.Utils;
+
+namespace ARTX.XPathReader.Utils
 {
     public class SyncXmlReaderTextIntendedTextWriter : XmlReaderTextIntendedTextWriter
     {

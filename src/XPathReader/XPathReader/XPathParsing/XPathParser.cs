@@ -1,13 +1,15 @@
 ﻿using System.Diagnostics;
 using System.Xml;
 using System.Xml.XPath;
+using ARTX.XPathReader.Utils;
 using Microsoft.CodeAnalysis;
-using XPathReader.Utils;
 
 namespace ARTX.XPathReader.XPathParsing
 {
     public class XPathParser
     {
+        public static readonly byte MaxSupportedDepth = 64;
+
         public List<DiagnosticData> NonErrorDiagnostics { get; } = [];
 
         public (XPathTree Tree, HashSet<string> XPaths) Parse(string xPathsInOneString)
@@ -25,11 +27,16 @@ namespace ARTX.XPathReader.XPathParsing
             XPathTreeElement? root = null;
 
             char[] pathSplit = ['/'];
+
             for (int i = 0; i < xPaths.Length; i++)
             {
                 ValidateXPath(xPaths[i]);
 
                 string[] parts = xPaths[i].Split(pathSplit, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length > MaxSupportedDepth)
+                {
+                    throw new UnsupportedXPathException($"The provided XPath exceeds the maximum supported depth of {MaxSupportedDepth}.", xPaths[i]);
+                }
 
                 XPathLevelIdentifier identifier = CreateIdentifier(parts[0], xPaths[i]);
                 if (i == 0)

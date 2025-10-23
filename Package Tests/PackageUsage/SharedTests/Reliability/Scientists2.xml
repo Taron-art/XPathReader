@@ -1,0 +1,74 @@
+<Scientists>
+	<Scientist>
+		<Name>Albert Einstein</Name>
+		<Field>Theoretical Physics</Field>
+		<Nationality>German-American</Nationality>
+		<Contribution>Theory of relativity</Contribution>
+	</Scientist>
+	<Scientist>
+		<Name>Rosalind Franklin</Name>
+		<Field>Biophysics</Field>
+		<Nationality>British</Nationality>
+		<Contribution>Discovery of DNA structure</Contribution>
+	</Scientist>
+	<Scientist>
+		<Name>Nikola Tesla</Name>
+		<Field>Electrical Engineering and Physics</Field>
+		<Nationality>Serbian-American</Nationality>
+		<Contribution>Development of AC electricity</Contribution>
+	</Scientist>
+	<Scientist>
+		<Name>Emmy Noether</Name>
+		<Field>Mathematics and Physics</Field>
+		<Nationality>German</Nationality>
+		<Contribution>Noether's theorem in theoretical physics</Contribution>
+	</Scientist>
+	<Scientist>
+		<Name>Alexander Fleming</Name>
+		<Field>Microbiology</Field>
+		<Nationality>Scottish</Nationality>
+		<Contribution>Discovery of penicillin</Contribution>
+	</Scientist>
+	<Scientist>
+		<Name>Chien-Shiung Wu</Name>
+		<Field>Experimental Physics</Field>
+		<Nationality>Chinese-American</Nationality>
+		<Contribution>Parity violation in weak interaction</Contribution>
+	</Scientist>
+	<Scientist>
+		<Name>Tim Berners-Lee</Name>
+		<Field>Computer Science</Field>
+		<Nationality>British</Nationality>
+		<Contribution>Invented the World Wide Web</Contribution>
+	</Scientist>
+	<Scientist>
+		<Name>Barbara McClintock</Name>
+		<Field>Genetics</Field>
+		<Nationality>American</Nationality>
+		<Contribution>Discovery of genetic transposition</Contribution>
+	</Scientist>
+	<Scientist>
+		<Name>Carl Linnaeus</Name>
+		<Field>Botany and Taxonomy</Field>
+		<Nationality>Swedish</Nationality>
+		<Contribution>Binomial nomenclature system</Contribution>
+	</Scientist>
+	<Scientist>
+		<Name>Jocelyn Bell Burnell</Name>
+		<Field>Astrophysics</Field>
+		<Nationality>British</Nationality>
+		<Contribution>Discovery of pulsars</Contribution>
+	</Scientist>
+	<Scientist>
+		<Name>Ada Lovelace</Name>
+		<Field>Mathematics and Computing</Field>
+		<Nationality>British</Nationality>
+		<Contribution>First computer algorithm</Contribution>
+	</Scientist>
+	<Scientist>
+		<Name>Antoine Lavoisier</Name>
+		<Field>Chemistry</Field>
+		<Nationality>French</Nationality>
+		<Contribution>Law of conservation of mass</Contribution>
+	</Scientist>
+</Scientists>
