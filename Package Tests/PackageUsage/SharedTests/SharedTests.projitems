@@ -9,6 +9,18 @@
     <Import_RootNamespace>SharedTests</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Functionality\LimitationsTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GeneratedCodeTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Reliability\XPathReaderCancellationTokenTest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)reliability\XPathReaderMultithreadingTest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\XmlGenerator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)reliability\Scientists1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)reliability\Scientists2.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

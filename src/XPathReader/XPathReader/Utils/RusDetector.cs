@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Runtime.InteropServices;
 
-namespace XPathReader.Utils
+namespace ARTX.XPathReader.Utils
 {
     internal static class RusDetector
     {
