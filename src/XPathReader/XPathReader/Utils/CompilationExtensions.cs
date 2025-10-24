@@ -38,7 +38,7 @@ namespace ILLink.RoslynAnalyzer
         public static INamedTypeSymbol? GetBestTypeByMetadataName(this Compilation compilation, string fullyQualifiedMetadataName)
         {
             // Try to get the unique type with this name, ignoring accessibility
-            var type = compilation.GetTypeByMetadataName(fullyQualifiedMetadataName);
+            INamedTypeSymbol? type = compilation.GetTypeByMetadataName(fullyQualifiedMetadataName);
 
             // Otherwise, try to get the unique type with this name originally defined in 'compilation'
             type ??= compilation.Assembly.GetTypeByMetadataName(fullyQualifiedMetadataName);
@@ -46,11 +46,11 @@ namespace ILLink.RoslynAnalyzer
             // Otherwise, try to get the unique accessible type with this name from a reference
             if (type is null)
             {
-                foreach (var module in compilation.Assembly.Modules)
+                foreach (IModuleSymbol module in compilation.Assembly.Modules)
                 {
-                    foreach (var referencedAssembly in module.ReferencedAssemblySymbols)
+                    foreach (IAssemblySymbol referencedAssembly in module.ReferencedAssemblySymbols)
                     {
-                        var currentType = referencedAssembly.GetTypeByMetadataName(fullyQualifiedMetadataName);
+                        INamedTypeSymbol? currentType = referencedAssembly.GetTypeByMetadataName(fullyQualifiedMetadataName);
                         if (currentType is null)
                             continue;
 
@@ -100,7 +100,7 @@ namespace ILLink.RoslynAnalyzer
                     return SymbolVisibility.Private;
             }
 
-            while (symbol != null && symbol.Kind != SymbolKind.Namespace)
+            while (symbol is not null && symbol.Kind != SymbolKind.Namespace)
             {
                 switch (symbol.DeclaredAccessibility)
                 {
@@ -137,10 +137,10 @@ namespace ILLink.RoslynAnalyzer
 
         internal static bool HasAttributeSuffix(this string name, bool isCaseSensitive)
         {
-            const string AttributeSuffix = "Attribute";
+            const string attributeSuffix = "Attribute";
 
-            var comparison = isCaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
-            return name.Length > AttributeSuffix.Length && name.EndsWith(AttributeSuffix, comparison);
+            StringComparison comparison = isCaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+            return name.Length > attributeSuffix.Length && name.EndsWith(attributeSuffix, comparison);
         }
 
         public static ImmutableArray<T> ToImmutableArray<T>(this ReadOnlySpan<T> span)
@@ -153,8 +153,8 @@ namespace ILLink.RoslynAnalyzer
                 case 3: return ImmutableArray.Create(span[0], span[1], span[2]);
                 case 4: return ImmutableArray.Create(span[0], span[1], span[2], span[3]);
                 default:
-                    var builder = ImmutableArray.CreateBuilder<T>(span.Length);
-                    foreach (var item in span)
+                    ImmutableArray<T>.Builder builder = ImmutableArray.CreateBuilder<T>(span.Length);
+                    foreach (T? item in span)
                         builder.Add(item);
 
                     return builder.MoveToImmutable();

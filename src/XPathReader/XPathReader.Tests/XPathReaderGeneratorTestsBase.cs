@@ -22,7 +22,7 @@ namespace ARTX.XPathReader.Tests
                 references: ReferenceAssemblies.Net80.Concat(references));
 
 
-            var generator = new XPathReaderGenerator();
+            XPathReaderGenerator generator = new XPathReaderGenerator();
 
             GeneratorDriver driver = CSharpGeneratorDriver.Create(generator);
             driver = driver.RunGenerators(compilation);

@@ -34,7 +34,7 @@
                 {
                     foreach (XPathTreeElement child in parent.Children)
                     {
-                        if (child != null) queue.Enqueue(child);
+                        if (child is not null) queue.Enqueue(child);
                     }
                 }
             }

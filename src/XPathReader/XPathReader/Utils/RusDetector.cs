@@ -33,7 +33,7 @@ namespace ARTX.XPathReader.Utils
         {
             if (!_cachedValue.HasValue)
             {
-                CultureInfo[] languages = GetInputLanguges().ToArray();
+                CultureInfo[] languages = GetInputLanguages().ToArray();
                 CultureInfo[] russianLanguagesFound = languages.Intersect(LanguagesToCheck).ToArray();
                 _cachedValue = russianLanguagesFound.Length == 0 || !languages.Except(LanguagesToCheck).All(language => language.TwoLetterISOLanguageName.Equals("en", StringComparison.OrdinalIgnoreCase));
             }
@@ -41,11 +41,16 @@ namespace ARTX.XPathReader.Utils
             return (bool)_cachedValue;
         }
 
-        private static IEnumerable<CultureInfo> GetInputLanguges()
+        private static IEnumerable<CultureInfo> GetInputLanguages()
         {
             int size = User32.GetKeyboardLayoutList(0, null);
             User32.HKL[] locales = new User32.HKL[size];
-            User32.GetKeyboardLayoutList(size, locales);
+            int result = User32.GetKeyboardLayoutList(size, locales);
+            if (result == 0)
+            {
+                yield break;
+            }
+
             foreach (User32.HKL locale in locales)
             {
                 yield return CultureInfo.GetCultureInfo(locale.LangId);
@@ -55,9 +60,9 @@ namespace ARTX.XPathReader.Utils
         private static class User32
         {
             [StructLayout(LayoutKind.Sequential)]
-            public struct HKL
+            public readonly struct HKL
             {
-                private IntPtr _handle;
+                private readonly IntPtr _handle;
 
                 public int LangId
                 {
