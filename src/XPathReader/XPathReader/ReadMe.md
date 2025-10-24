@@ -8,40 +8,6 @@ XPathReader is a .NET/C# library that simplifies the process of reading and extr
 
 # Usage example
 
-<details>
-<summary>bookstore.xml</summary>
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<bookstore>
-    <books>
-       <book category="fiction">
-           <title>GFG</title>
-           <author>Fictional book </author>
-           <year>2002</year>
-           <price>5000</price>
-       </book>
-       <book category="non-fiction">
-            <title>GFG 2 </title>
-            <author>non fictional book </author>
-            <year>2020</year>
-            <price>1000</price>
-       </book>
-    </books>
-    <journals>
-        <journal>
-            <title>Journal 1</title>
-            <publisher>Publisher 1</publisher>
-        </journal>
-        <journal>
-            <title>Journal 2</title>
-            <publisher>Publisher 2</publisher>
-        </journal>
-    </journals>
-</bookstore>
-```
-</details>
-
 ```csharp
 using ARTX.XPath;
 

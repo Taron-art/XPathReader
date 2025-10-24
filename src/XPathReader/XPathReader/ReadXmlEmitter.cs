@@ -8,7 +8,7 @@ namespace ARTX.XPathReader
     {
         private const string NameOfTheXPathBuilder = "currentXPathBuilder";
 
-        private int _variableIndex = 0;
+        private int _variableIndex;
 
         private readonly string _modifiers;
         private readonly XPathTree _tree;
@@ -39,7 +39,7 @@ namespace ARTX.XPathReader
             writer.WriteLine("while (!reader.EOF)");
             writer.OpenBrace();
 
-            XPathTreeElement[] array = { _tree.Root };
+            XPathTreeElement[] array = [_tree.Root];
             GenerateForNode(array, writer);
             writer.CloseBrace();
             writer.CloseBrace();
@@ -75,7 +75,7 @@ namespace ARTX.XPathReader
 
             writer.WriteLine();
 
-            if (parentNameVariable != null)
+            if (parentNameVariable is not null)
             {
                 writer.WriteLine(
                     $"while (reader.NodeType != XmlNodeType.EndElement || !ReferenceEquals(reader.LocalName, {parentNameVariable}))");
@@ -88,7 +88,7 @@ namespace ARTX.XPathReader
 
             for (int i = 0; i < groupsByName.Length; i++)
             {
-                var group = groupsByName[i];
+                IGrouping<XPathLevelIdentifier, XPathTreeElement> group = groupsByName[i];
                 string originalLengthVariableName = $"originalLength{++_variableIndex:x8}";
 
                 // If we are not in the leaf, we do not care about empty elements.
@@ -160,7 +160,7 @@ namespace ARTX.XPathReader
                 index++;
             }
 
-            if (parentNameVariable != null)
+            if (parentNameVariable is not null)
             {
                 writer.WriteLine($"else if (!ReferenceEquals(reader.LocalName, {parentNameVariable}))");
                 writer.OpenBrace();
@@ -171,7 +171,7 @@ namespace ARTX.XPathReader
             AppendElseReadXml(writer);
             writer.CloseBrace();
             AppendElseReadXml(writer);
-            if (parentNameVariable != null)
+            if (parentNameVariable is not null)
             {
                 writer.CloseBrace();
             }

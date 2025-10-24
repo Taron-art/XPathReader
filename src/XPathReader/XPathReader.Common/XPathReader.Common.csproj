@@ -30,8 +30,4 @@
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Reading\" />
-  </ItemGroup>
-
 </Project>
