@@ -63,7 +63,7 @@ namespace ARTX.XPathReader.XPathParsing
                 }
             }
 
-            if (root == null)
+            if (root is null)
             {
                 throw new XPathParsingException("Failed to extract single valid xpath from the argument");
             }
@@ -83,7 +83,7 @@ namespace ARTX.XPathReader.XPathParsing
                 throw new InvalidXPathException(ex.Message, xPath);
             }
 
-            if (!xPath.StartsWith("/") || xPath.Contains("//"))
+            if (!xPath.StartsWith("/", StringComparison.Ordinal) || xPath.Contains("//"))
             {
                 throw new UnsupportedXPathException("Only absolute XPaths are supported.", xPath);
             }
@@ -110,7 +110,7 @@ namespace ARTX.XPathReader.XPathParsing
                     XPathLevelIdentifier currentPart = CreateIdentifier(parts.GetItem(0), requestedXPath);
                     XPathTreeElement? matchingChild = withChildren.Children.FirstOrDefault(c => c.Identifier == currentPart);
                     bool isNewChild = false;
-                    if (matchingChild == null)
+                    if (matchingChild is null)
                     {
                         if (parts.Count == 1)
                         {
@@ -175,12 +175,12 @@ namespace ARTX.XPathReader.XPathParsing
 
         private static void ValidateXPathName(string xpathPart, string fullXPath)
         {
-            if (xpathPart.Contains("*") || xpathPart.Contains("text()") || xpathPart.Contains("node()"))
+            if (xpathPart.Contains('*') || xpathPart.Contains("text()") || xpathPart.Contains("node()"))
             {
                 throw new UnsupportedXPathException($"The part '{xpathPart}' is not supported.", fullXPath);
             }
 
-            if (xpathPart.Contains("@"))
+            if (xpathPart.Contains('@'))
             {
                 throw new UnsupportedXPathException($"The attribute selection part '{xpathPart}' is not supported.", fullXPath);
             }

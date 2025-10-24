@@ -7,14 +7,14 @@ namespace ARTX.Common.Tests
 {
     [TestFixture]
     [TestOf(typeof(ReadResult))]
-    internal class ReadResultTests
+    public class ReadResultTests
     {
         private const string ElementLocalName = "child";
 
         [Test]
         public void ToPersistedResult_CopiesData()
         {
-            string xml = """
+            const string xml = """
                 <root>
                     <child>value</child>
                 </root>
@@ -24,9 +24,9 @@ namespace ARTX.Common.Tests
             Assert.That(reader.ReadToDescendant(ElementLocalName));
             IXPathBuilder actualXPath = A.Fake<IXPathBuilder>();
             A.CallTo(() => actualXPath.GetXPath()).Returns("/root/child[1]");
-            string requestedXPath = "/root/child";
+            const string requestedXPath = "/root/child";
 
-            var subReader = reader.ReadSubtree();
+            XmlReader subReader = reader.ReadSubtree();
             subReader.MoveToContent();
 
             ReadResult readResult = new(actualXPath, subReader, requestedXPath, ElementLocalName);
@@ -40,7 +40,7 @@ namespace ARTX.Common.Tests
         [Test]
         public async Task ToPersistedResultAsync_CopiesData()
         {
-            string xml = """
+            const string xml = """
                 <root>
                     <child>value</child>
                 </root>
@@ -50,9 +50,9 @@ namespace ARTX.Common.Tests
             Assert.That(reader.ReadToDescendant(ElementLocalName));
             IXPathBuilder actualXPath = A.Fake<IXPathBuilder>();
             A.CallTo(() => actualXPath.GetXPath()).Returns("/root/child[1]");
-            string requestedXPath = "/root/child";
+            const string requestedXPath = "/root/child";
 
-            var subReader = reader.ReadSubtree();
+            XmlReader subReader = reader.ReadSubtree();
             await subReader.MoveToContentAsync();
 
             ReadResult readResult = new(actualXPath, subReader, requestedXPath, ElementLocalName);

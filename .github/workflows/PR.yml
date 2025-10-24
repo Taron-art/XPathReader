@@ -41,7 +41,10 @@ jobs:
 
     - name: Restore packages
       run: dotnet restore src/XPathReader/XPathReader.sln
-      
+    
+    - name: Build with Warnings as Errors
+      run: dotnet build src/XPathReader/XPathReader.sln -c ${{ matrix.configuration}} -p:Platform="${{ matrix.platform }}" --warnaserror
+    
     # Execute all unit tests in the solution
     - name: Execute unit tests
       run: dotnet test src/XPathReader/XPathReader.sln -c ${{ matrix.configuration}} -p:Platform="${{ matrix.platform }}"
