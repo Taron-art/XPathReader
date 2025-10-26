@@ -4,7 +4,7 @@ namespace ARTX.Common.Tests.Internal
 {
     [TestFixture]
     [TestOf(typeof(ThreadSafeNameTable))]
-    public class ThreadSafeNameTableTests
+    internal class ThreadSafeNameTableTests
     {
         private ThreadSafeNameTable _nameTable;
 
@@ -48,7 +48,7 @@ namespace ARTX.Common.Tests.Internal
             const string input = "duplicate";
 
             string first = _nameTable.Add(input);
-            string second = _nameTable.Add(input);
+            string second = _nameTable.Add($"{input}");
 
             Assert.That(second, Is.SameAs(first));
         }
@@ -67,8 +67,8 @@ namespace ARTX.Common.Tests.Internal
         {
             const int threadCount = 10;
             const int iterationsPerThread = 1000;
-            Task[] tasks = new Task[threadCount];
-            HashSet<string>[] results = new HashSet<string>[threadCount];
+            var tasks = new Task[threadCount];
+            var results = new HashSet<string>[threadCount];
 
             for (int i = 0; i < threadCount; i++)
             {
@@ -88,7 +88,7 @@ namespace ARTX.Common.Tests.Internal
             Task.WaitAll(tasks);
 
             // Verify all threads got the same references for the same strings
-            HashSet<string> firstThreadResults = results[0];
+            var firstThreadResults = results[0];
             Parallel.For(0, threadCount, (i) =>
             {
                 foreach (string value in firstThreadResults)

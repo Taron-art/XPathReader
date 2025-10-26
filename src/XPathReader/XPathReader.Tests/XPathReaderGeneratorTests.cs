@@ -89,8 +89,8 @@
             yield return (TestCaseData<string>)new TestCaseData<string>("[GeneratedXPathReader(\"\")]").SetArgDisplayNames("Empty_argument");
             yield return (TestCaseData<string>)new TestCaseData<string>("[GeneratedXPathReader(\"/root/child1[1]/\")]").SetArgDisplayNames("Ends_with_solidus");
             // We need to escape two backslashes (one for this string, other so a compiled code still have this backslash) + escape the ": 2+2+1.
-            yield return (TestCaseData<string>)new TestCaseData<string>("[GeneratedXPathReader(\"/root/child1[1]\\\\\")]").SetArgDisplayNames("Ends_with_reverse_solidus");
-            yield return (TestCaseData<string>)new TestCaseData<string>("[GeneratedXPathReader(\"/root/child1 1\")]").SetArgDisplayNames("Invalid_name");
+            yield return (TestCaseData<string>)new TestCaseData<string>($"[GeneratedXPathReader(\"/root/child1[1]\\\\\")]").SetArgDisplayNames("Ends_with_reverse_solidus");
+            yield return (TestCaseData<string>)new TestCaseData<string>($"[GeneratedXPathReader(\"/root/child1 1\")]").SetArgDisplayNames("Invalid_name");
         }
 
 
@@ -112,13 +112,13 @@
                 }
                 """;
 
-            VerifySettings settings = CreateSettingsForSourceTests();
+            var settings = CreateSettingsForSourceTests();
             await Verify(source, settings);
         }
 
         private VerifySettings CreateSettingsForSourceTests()
         {
-            VerifySettings settings = new VerifySettings();
+            var settings = new VerifySettings();
             settings.UseMethodName(_parentModifiers.Replace(' ', '_') + _methodModifiers.Replace(' ', '_') + '_' + TestContext.CurrentContext.Test.Name);
             settings.UseTextForParameters("_");
             return settings;

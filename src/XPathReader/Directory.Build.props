@@ -4,14 +4,4 @@
 	<Copyright>Artur Kharin 2025</Copyright>
 	<ProductName>XPathReader</ProductName>
   </PropertyGroup>
-  <PropertyGroup>
-	<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
-	<AnalysisLevel>latest-recommended</AnalysisLevel>
-  </PropertyGroup>
-  <ItemGroup>
-  <PackageReference Include="Roslynator.Analyzers" Version="*">
-    <PrivateAssets>all</PrivateAssets>
-    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-  </PackageReference>
-</ItemGroup>
 </Project>

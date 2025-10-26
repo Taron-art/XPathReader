@@ -77,7 +77,7 @@ namespace ARTX.XPath
         /// Reads XML data from the provided stream and yields XPath matches.
         /// </summary>
         /// <param name="input">
-        /// The text reader from which to read the XML data.
+        /// The text reader from which to read the XML data. 
         /// A text reader returns a stream of Unicode characters, so the encoding specified in the XML declaration isn't used by the XML reader to decode the data stream.
         /// </param>
         /// <returns>An enumerable collection of <see cref="ReadResult"/> containing matched XPath nodes.</returns>
@@ -97,7 +97,7 @@ namespace ARTX.XPath
         /// Reads XML data from the provided stream and yields XPath matches.
         /// </summary>
         /// <param name="input">
-        /// The text reader from which to read the XML data.
+        /// The text reader from which to read the XML data. 
         /// A text reader returns a stream of Unicode characters, so the encoding specified in the XML declaration isn't used by the XML reader to decode the data stream.
         /// </param>
         /// <param name="xmlReaderSettings">Custom XML reader settings for controlling the XML parsing behavior.</param>
@@ -214,7 +214,7 @@ namespace ARTX.XPath
         /// Asynchronously reads XML data from the provided stream and yields XPath matches.
         /// </summary>
         /// <param name="input">
-        /// The text reader from which to read the XML data.
+        /// The text reader from which to read the XML data. 
         /// A text reader returns a stream of Unicode characters, so the encoding specified in the XML declaration isn't used by the XML reader to decode the data stream.
         /// </param>
         /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
@@ -236,7 +236,7 @@ namespace ARTX.XPath
         /// Asynchronously reads XML data from the provided stream using custom XML reader settings.
         /// </summary>
         /// <param name="input">
-        /// The text reader from which to read the XML data.
+        /// The text reader from which to read the XML data. 
         /// A text reader returns a stream of Unicode characters, so the encoding specified in the XML declaration isn't used by the XML reader to decode the data stream.
         /// </param>
         /// <param name="xmlReaderSettings">Custom XML reader settings for controlling the XML parsing behavior.</param>
@@ -311,7 +311,7 @@ namespace ARTX.XPath
         /// <returns>An asynchronous enumerable collection of <see cref="ReadResult"/> containing matched XPath nodes.</returns>
         protected abstract IAsyncEnumerable<ReadResult> ReadInternalAsync(XmlReader reader, CancellationToken cancellationToken);
 
-        private static XmlReaderSettings CreateXmlSettings(bool isAsync)
+        private XmlReaderSettings CreateXmlSettings(bool isAsync)
         {
             return new XmlReaderSettings
             {

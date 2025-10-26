@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.Text;
 
 namespace ARTX.XPath.Internal
@@ -29,11 +28,11 @@ namespace ARTX.XPath.Internal
         {
             if (index == 0)
             {
-                _builder.AppendFormat(CultureInfo.InvariantCulture, "/{0}", localName);
+                _builder.AppendFormat("/{0}", localName);
             }
             else
             {
-                _builder.AppendFormat(CultureInfo.InvariantCulture, "/{0}[{1}]", localName, index);
+                _builder.AppendFormat("/{0}[{1}]", localName, index);
             }
         }
 

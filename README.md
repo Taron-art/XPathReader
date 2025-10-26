@@ -91,6 +91,6 @@ dotenet add package ARTX.XPathReader
 - Only absolute paths starting from the root are supported.
 - When XPath contains an axis, the error is thrown during compilation.
 - When XPath contains predicates, they are ignored, and only the node name is considered. 
-- Please note that the generator adds a field (static or not) into the declared class. Therefore, interfaces and read-only structs only supported in a static context.
+- Please note that the generator adds a field (static or not) into the declared class. Therefore, interfaces and read-only structs only supported in static context.
 
 Predicates support is planned for future releases.

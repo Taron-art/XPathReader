@@ -41,14 +41,14 @@ namespace ARTX.XPathReader
                     return;
                 }
 
-                XPathReaderEmitter emitter = new();
+                XPathReaderEmitter emitter = new XPathReaderEmitter();
                 emitter.Process(context, source!);
             });
         }
 
         private GatheringResult? GetClassesToGenerate(GeneratorAttributeSyntaxContext context, CancellationToken token)
         {
-            MemberDeclarationSyntax memberSyntax = (MemberDeclarationSyntax)context.TargetNode;
+            var memberSyntax = (MemberDeclarationSyntax)context.TargetNode;
             if (memberSyntax.Parent is not TypeDeclarationSyntax typeDec)
             {
                 return null;
@@ -117,8 +117,8 @@ namespace ARTX.XPathReader
                     ns ?? string.Empty,
                     $"{typeDec.Identifier}{typeDec.TypeParameterList}");
 
-                MemberInfo current = memberInfo;
-                TypeDeclarationSyntax? parent = typeDec.Parent as TypeDeclarationSyntax;
+                var current = memberInfo;
+                var parent = typeDec.Parent as TypeDeclarationSyntax;
 
                 while (parent is not null && IsAllowedKind(parent.Kind()))
                 {
@@ -161,7 +161,7 @@ namespace ARTX.XPathReader
 
         private static Location GetComparableLocation(SyntaxNode syntax)
         {
-            Location location = syntax.GetLocation();
+            var location = syntax.GetLocation();
             return Location.Create(location.SourceTree?.FilePath ?? string.Empty, location.SourceSpan, location.GetLineSpan().Span);
         }
 

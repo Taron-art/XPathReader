@@ -7,8 +7,8 @@
         [Test]
         public async Task Generate_NonStaticInInterface_ProducesError()
         {
-            const string source =
-                """
+            string source =
+                $$"""
                 namespace XPathReader.TestInterface
                 {
                     using System;
@@ -29,8 +29,8 @@
         [Test]
         public async Task Generate_NonStaticInReadonlyStruct_ProducesError()
         {
-            const string source =
-                """
+            string source =
+                $$"""
                 namespace XPathReader.TestInterface
                 {
                     using System;
@@ -48,9 +48,9 @@
             await Verify(source, settings);
         }
 
-        private static VerifySettings CreateSettingsForSourceTests()
+        private VerifySettings CreateSettingsForSourceTests()
         {
-            VerifySettings settings = new VerifySettings();
+            var settings = new VerifySettings();
             settings.UseMethodName(TestContext.CurrentContext.Test.Name);
             settings.UseTextForParameters("_");
             return settings;

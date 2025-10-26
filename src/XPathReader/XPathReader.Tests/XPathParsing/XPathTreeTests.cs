@@ -10,28 +10,28 @@ namespace ARTX.XPathReader.Tests.XPathParsing
         public void GetLocalNames_SingleNode_ReturnsLocalName()
         {
             // Arrange
-            XPathTreeLeafElement root = new(new XPathLevelIdentifier("root"), "/root");
-            XPathTree tree = new(root);
+            var root = new XPathTreeLeafElement(new XPathLevelIdentifier("root"), "/root");
+            var tree = new XPathTree(root);
 
             // Act
-            List<string> names = tree.GetLocalNames().ToList();
+            var names = tree.GetLocalNames().ToList();
 
             // Assert
-            Assert.That(names, Is.EqualTo(["root"]));
+            Assert.That(names, Is.EqualTo(new[] { "root" }));
         }
 
         [Test]
         public void GetLocalNames_MultipleNodes_ReturnsUniqueNames()
         {
             // Arrange
-            XPathTreeElementWithChildren root = new(new XPathLevelIdentifier("root"));
+            var root = new XPathTreeElementWithChildren(new XPathLevelIdentifier("root"));
 
             // first child is a leaf named "child"
-            XPathTreeLeafElement childLeaf = new(new XPathLevelIdentifier("child"), "/root/child");
+            var childLeaf = new XPathTreeLeafElement(new XPathLevelIdentifier("child"), "/root/child");
             root.Children.Add(childLeaf);
 
             // second child is a parent node named "parent"
-            XPathTreeElementWithChildren parentNode = new(new XPathLevelIdentifier("parent"));
+            var parentNode = new XPathTreeElementWithChildren(new XPathLevelIdentifier("parent"));
             // add a child with the same local name "child" (duplicate)
             parentNode.Children.Add(new XPathTreeLeafElement(new XPathLevelIdentifier("child"), "/root/parent/child"));
             // add another distinct child "grandchild"
@@ -39,13 +39,13 @@ namespace ARTX.XPathReader.Tests.XPathParsing
 
             root.Children.Add(parentNode);
 
-            XPathTree tree = new(root);
+            var tree = new XPathTree(root);
 
             // Act
-            List<string> names = tree.GetLocalNames().ToList();
+            var names = tree.GetLocalNames().ToList();
 
             // Assert
-            Assert.That(names, Is.EqualTo(["root", "child", "parent", "grandchild"]));
+            Assert.That(names, Is.EqualTo(new[] { "root", "child", "parent", "grandchild" }));
         }
     }
 }

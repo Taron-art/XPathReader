@@ -6,7 +6,7 @@ namespace ARTX.XPathReader.Tests.Smoke_Tests
 {
     [TestFixture]
     [TestOf(typeof(XPath.XPathReader))]
-    public partial class XPathReaderTests
+    internal partial class XPathReaderTests
     {
 
         [GeneratedXPathReader("/ukraine/geography/regions/region/name|/ukraine/economy/sectors/sector/companies/company|/ukraine/culture/languages/language")]
@@ -33,8 +33,8 @@ namespace ARTX.XPathReader.Tests.Smoke_Tests
                 stream = File.OpenRead("Smoke Tests/TestFile.xml");
             }
 
-            XPath.XPathReader firstInstance = UkraineXmlReader();
-            XPath.XPathReader secondInstance = UkraineXmlReader();
+            var firstInstance = UkraineXmlReader();
+            var secondInstance = UkraineXmlReader();
 
             Assert.That(firstInstance, Is.SameAs(secondInstance));
             List<string> regions = [];
@@ -156,7 +156,7 @@ namespace ARTX.XPathReader.Tests.Smoke_Tests
         [CancelAfter(100)]
         public void EmptyElementReader_ReturnsEmptyNode_WhenPresent(CancellationToken testCancellationToken)
         {
-            StringReader testFile = new(
+            var testFile = new StringReader(
                 """
                 <a>
                     <b/>

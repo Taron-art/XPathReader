@@ -2,9 +2,10 @@
 
 namespace XPathReader.Utils
 {
+
     public abstract class XmlReaderTextIntendedTextWriter : IntendedTextWriterExtended, IXmlReaderTextIntendedTextWriter
     {
-        private protected readonly string _xmlReaderVariableName;
+        protected readonly string _xmlReaderVariableName;
 
         protected XmlReaderTextIntendedTextWriter(TextWriter writer, string xmlReaderVariableName) : base(writer)
         {
