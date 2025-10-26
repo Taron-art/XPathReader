@@ -10,10 +10,7 @@
         MessageFormat: The argument '{0}' for the GeneratedXPathReader attribute is not a valid XPath: {1},
         Category: Usage,
         DefaultSeverity: Error,
-        IsEnabledByDefault: true,
-        CustomTags: [
-          NotConfigurable
-        ]
+        IsEnabledByDefault: true
       }
     }
   ]

@@ -356,6 +356,3 @@ csharp_style_prefer_extended_property_pattern = true:suggestion
 [*Tests/**/*.cs]
 # CA1861: Avoid zero-length array allocations
 dotnet_diagnostic.CA1861.severity = suggestion
-
-# XPR005: Predicate is not recognized
-dotnet_diagnostic.XPR005.severity = suggestion
