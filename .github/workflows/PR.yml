@@ -1,4 +1,4 @@
-name: PR Verification
+name: .NET Core
 
 on:
   pull_request:
