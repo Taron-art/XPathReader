@@ -11,10 +11,7 @@
         MessageFormat: Predicate {0} is not recognized and will be ignored,
         Category: Usage,
         DefaultSeverity: Warning,
-        IsEnabledByDefault: true,
-        CustomTags: [
-          CustomSeverityConfigurable
-        ]
+        IsEnabledByDefault: true
       }
     },
     {
@@ -28,10 +25,7 @@
         MessageFormat: Predicate {0} is not recognized and will be ignored,
         Category: Usage,
         DefaultSeverity: Warning,
-        IsEnabledByDefault: true,
-        CustomTags: [
-          CustomSeverityConfigurable
-        ]
+        IsEnabledByDefault: true
       }
     },
     {
@@ -45,10 +39,7 @@
         MessageFormat: Predicate {0} is not recognized and will be ignored,
         Category: Usage,
         DefaultSeverity: Warning,
-        IsEnabledByDefault: true,
-        CustomTags: [
-          CustomSeverityConfigurable
-        ]
+        IsEnabledByDefault: true
       }
     },
     {
@@ -62,10 +53,7 @@
         MessageFormat: Predicate {0} is not recognized and will be ignored,
         Category: Usage,
         DefaultSeverity: Warning,
-        IsEnabledByDefault: true,
-        CustomTags: [
-          CustomSeverityConfigurable
-        ]
+        IsEnabledByDefault: true
       }
     },
     {
@@ -79,10 +67,7 @@
         MessageFormat: Predicate {0} is not recognized and will be ignored,
         Category: Usage,
         DefaultSeverity: Warning,
-        IsEnabledByDefault: true,
-        CustomTags: [
-          CustomSeverityConfigurable
-        ]
+        IsEnabledByDefault: true
       }
     }
   ]

@@ -12,7 +12,7 @@ namespace ARTX.XPathReader.Tests.Smoke_Tests
         [GeneratedXPathReader("/ukraine/geography/regions/region/name|/ukraine/economy/sectors/sector/companies/company|/ukraine/culture/languages/language")]
         private static partial XPath.XPathReader UkraineXmlReader();
 
-        [GeneratedXPathReader("/company/name")]
+        [GeneratedXPathReader("/company/name|/company/name[1]")]
         private static partial XPath.XPathReader CompanyNameReader { get; }
 
         [GeneratedXPathReader("/a/b/c")]
@@ -54,7 +54,13 @@ namespace ARTX.XPathReader.Tests.Smoke_Tests
                     case "/ukraine/economy/sectors/sector/companies/company":
                         Assert.That(result.ElementLocalName, Is.EqualTo("company"));
                         Assert.That(result.NodeReader.LocalName, Is.EqualTo("company"));
-                        companies.Add(CompanyNameReader.ReadFromSubtree(result.NodeReader).Select(result => result.NodeReader.ReadOuterXml()).Single());
+                        companies.Add(CompanyNameReader.ReadFromSubtree(result.NodeReader)
+                            .Select(result =>
+                            {
+                                Assert.That(result.RequestedXPaths, Is.EquivalentTo(["/company/name", "/company/name[1]"]));
+                                return result.NodeReader.ReadOuterXml();
+                            })
+                            .Single());
                         Assert.That(result.ActualXPath.GetXPath(), Is.EqualTo($"/ukraine/economy[1]/sectors[1]/sector[2]/companies[1]/company[{companies.Count}]"));
                         break;
                     case "/ukraine/culture/languages/language":
@@ -121,6 +127,7 @@ namespace ARTX.XPathReader.Tests.Smoke_Tests
                         await foreach (ReadResult companyResult in CompanyNameReader.ReadFromSubtreeAsync(result.NodeReader))
                         {
                             companies.Add(await companyResult.NodeReader.ReadOuterXmlAsync());
+                            Assert.That(companyResult.RequestedXPaths, Is.EquivalentTo(["/company/name", "/company/name[1]"]));
                         }
                         Assert.That(result.ActualXPath.GetXPath(), Is.EqualTo($"/ukraine/economy[1]/sectors[1]/sector[2]/companies[1]/company[{companies.Count}]"));
                         break;
