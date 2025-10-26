@@ -83,7 +83,7 @@ namespace XPathReader.Tests.XPathParsing
             var result = _parser.Parse(xpaths);
 
             // Assert
-            Assert.That(GetAllXPaths(result), Has.Count.EqualTo(2));
+            Assert.That(GetAllXPaths(result).Count(), Is.EqualTo(2));
         }
 
         [Test]
@@ -100,7 +100,7 @@ namespace XPathReader.Tests.XPathParsing
             Assert.Throws<ArgumentException>(() => _parser.Parse("   "));
         }
 
-        private static List<string> GetAllXPaths(XPathTree tree)
+        private static IEnumerable<string> GetAllXPaths(XPathTree tree)
         {
             var result = new List<string>();
             CollectXPaths(tree.Root, result);

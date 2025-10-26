@@ -4,7 +4,7 @@ using XPathReader.XPathParsing;
 
 namespace XPathReader
 {
-    internal class ReadXmlEmitter
+    internal class ReadXmlEmmitter
     {
         private const string NameOfTheXPathBuilder = "currentXPathBuilder";
 
@@ -12,9 +12,8 @@ namespace XPathReader
 
         private readonly string _modifiers;
         private readonly XPathTree _tree;
-        private readonly VariableStorage _variableStorage = new();
 
-        public ReadXmlEmitter(XPathTree tree, string modifiers = "protected override")
+        public ReadXmlEmmitter(XPathTree tree, string modifiers = "protected override")
         {
             _modifiers = modifiers;
             _tree = tree;
@@ -31,8 +30,6 @@ namespace XPathReader
             writer.OpenBrace();
             writer.WriteLine("using (reader)");
             writer.OpenBrace();
-            WriteNameTableInitialization(writer);
-
             writer.WriteLineMoveToContent();
             writer.WriteLine($"XPathBuilder {NameOfTheXPathBuilder} = new XPathBuilder();");
             writer.WriteLine("while (!reader.EOF)");
@@ -43,16 +40,6 @@ namespace XPathReader
             writer.CloseBrace();
             writer.CloseBrace();
             writer.CloseBrace();
-        }
-
-        private void WriteNameTableInitialization(IXmlReaderTextIntendedTextWriter writer)
-        {
-            IEnumerable<string> allNames = _tree.GetLocalNames();
-
-            foreach (string name in allNames)
-            {
-                writer.WriteLine($"string {_variableStorage.Add(name)} = reader.NameTable.Add(\"{name}\");");
-            }
         }
 
         private void GenerateForNode(IReadOnlyCollection<XPathTreeElement> elements, IXmlReaderTextIntendedTextWriter writer, string? parentNameVariable = null)
@@ -72,12 +59,19 @@ namespace XPathReader
                 writer.WriteLine($"int {counterVariables[i]} = 0;");
             }
 
-            writer.WriteLine();
+            string[] anatomizedVariables = new string[groupsByName.Length];
+
+            for (int i = 0; i < groupsByName.Length; i++)
+            {
+                IGrouping<XPathLevelIdentifier, XPathTreeElement> element = groupsByName[i];
+                anatomizedVariables[i] = $"a{element.Key.LocalName}{++_variableIndex:x8}";
+                writer.WriteLine($"object {anatomizedVariables[i]} = reader.NameTable.Add(\"{element.Key.LocalName}\");");
+            }
 
             if (parentNameVariable != null)
             {
                 writer.WriteLine(
-                    $"while (reader.NodeType != XmlNodeType.EndElement || !ReferenceEquals(reader.LocalName, {parentNameVariable}))");
+                    $"while (reader.NodeType != XmlNodeType.EndElement || !object.ReferenceEquals(reader.LocalName, {parentNameVariable}))");
                 writer.OpenBrace();
             }
 
@@ -91,7 +85,7 @@ namespace XPathReader
                 string originalLengthVariableName = $"originalLength{++_variableIndex:x8}";
 
                 writer.WriteLine(
-                    $"{(i == 0 ? "" : "else ")}if (ReferenceEquals(reader.LocalName, {_variableStorage[group.Key.LocalName]}))");
+                    $"{(i == 0 ? "" : "else ")}if (object.ReferenceEquals(reader.LocalName, {anatomizedVariables[index]}))");
                 writer.OpenBrace();
 
                 writer.WriteLine($"++{counterVariables[index]};");
@@ -116,11 +110,10 @@ namespace XPathReader
                 {
                     if (element is XPathTreeElementWithChildren elementWithChildren)
                     {
-                        GenerateForNode(elementWithChildren.Children, writer, _variableStorage[group.Key.LocalName]);
+                        GenerateForNode(elementWithChildren.Children, writer, anatomizedVariables[index]);
                     }
                     else if (element is XPathTreeLeafElement leaf)
                     {
-                        writer.WriteLine();
                         writer.WriteLine("XmlReader localReader = reader.ReadSubtree();");
                         writer.WriteLineMoveToContent("localReader");
                         if (leaf.RequestedXPaths.Count > 1)
@@ -146,7 +139,6 @@ namespace XPathReader
                         }
 
                         writer.WriteLine("localReader.Dispose();");
-                        writer.WriteLine();
                     }
                 }
 
@@ -157,7 +149,7 @@ namespace XPathReader
 
             if (parentNameVariable != null)
             {
-                writer.WriteLine($"else if (!ReferenceEquals(reader.LocalName, {parentNameVariable}))");
+                writer.WriteLine($"else if (!object.ReferenceEquals(reader.LocalName, {parentNameVariable}))");
                 writer.OpenBrace();
                 writer.WriteLineSkip();
                 writer.CloseBrace();

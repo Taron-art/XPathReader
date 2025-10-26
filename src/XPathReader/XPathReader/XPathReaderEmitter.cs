@@ -124,7 +124,7 @@ namespace XPathReader
             };
             AsyncXmlReaderTextIntendedTextWriter asyncWriter = new(new StringWriter(), "reader");
             asyncWriter.Indent = writer.Indent;
-            var emitter = new ReadXmlEmitter(tree);
+            var emitter = new ReadXmlEmmitter(tree);
 
             TwoXmlReaderTextIntendedTextWriterProxy proxyWriter = new(syncWriter, asyncWriter);
             emitter.GenerateCode(proxyWriter);

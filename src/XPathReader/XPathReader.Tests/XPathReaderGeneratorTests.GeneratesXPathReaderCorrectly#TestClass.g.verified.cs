@@ -34,102 +34,78 @@ namespace XPathReader.Generated
         {
             using (reader)
             {
-                string e_root = reader.NameTable.Add("root");
-                string e_child1 = reader.NameTable.Add("child1");
-                string e_child = reader.NameTable.Add("child");
-                string e_child_important = reader.NameTable.Add("child.important");
-                string e_child_3 = reader.NameTable.Add("child-3");
-                string e_grandchild1 = reader.NameTable.Add("grandchild1");
                 reader.MoveToContent();
                 XPathBuilder currentXPathBuilder = new XPathBuilder();
                 while (!reader.EOF)
                 {
                     int counter00000001 = 0;
-                    
+                    object aroot00000002 = reader.NameTable.Add("root");
                     if (reader.NodeType == XmlNodeType.Element)
                     {
-                        if (ReferenceEquals(reader.LocalName, e_root))
+                        if (object.ReferenceEquals(reader.LocalName, aroot00000002))
                         {
                             ++counter00000001;
-                            int originalLength00000002 = currentXPathBuilder.Length;
+                            int originalLength00000003 = currentXPathBuilder.Length;
                             currentXPathBuilder.AddLevel("root");
                             if (counter00000001 != 1)
                             {
                                 throw new XmlException("More than one root found in the document.");
                             }
-                            int counter00000003 = 0;
                             int counter00000004 = 0;
                             int counter00000005 = 0;
                             int counter00000006 = 0;
-                            
-                            while (reader.NodeType != XmlNodeType.EndElement || !ReferenceEquals(reader.LocalName, e_root))
+                            object achild100000007 = reader.NameTable.Add("child1");
+                            object achild00000008 = reader.NameTable.Add("child");
+                            object achild300000009 = reader.NameTable.Add("child3");
+                            while (reader.NodeType != XmlNodeType.EndElement || !object.ReferenceEquals(reader.LocalName, aroot00000002))
                             {
                                 if (reader.NodeType == XmlNodeType.Element)
                                 {
-                                    if (ReferenceEquals(reader.LocalName, e_child1))
+                                    if (object.ReferenceEquals(reader.LocalName, achild100000007))
                                     {
-                                        ++counter00000003;
-                                        int originalLength00000007 = currentXPathBuilder.Length;
-                                        currentXPathBuilder.AddLevel("child1", counter00000003);
-                                        
+                                        ++counter00000004;
+                                        int originalLength0000000a = currentXPathBuilder.Length;
+                                        currentXPathBuilder.AddLevel("child1", counter00000004);
                                         XmlReader localReader = reader.ReadSubtree();
                                         localReader.MoveToContent();
                                         yield return new ReadResult(currentXPathBuilder, localReader, "/root/child1");
                                         localReader.Dispose();
-                                        
-                                        currentXPathBuilder.Length = originalLength00000007;
+                                        currentXPathBuilder.Length = originalLength0000000a;
                                     }
-                                    else if (ReferenceEquals(reader.LocalName, e_child))
-                                    {
-                                        ++counter00000004;
-                                        int originalLength00000008 = currentXPathBuilder.Length;
-                                        currentXPathBuilder.AddLevel("child", counter00000004);
-                                        
-                                        XmlReader localReader = reader.ReadSubtree();
-                                        localReader.MoveToContent();
-                                        yield return new ReadResult(currentXPathBuilder, localReader, "/root/child");
-                                        localReader.Dispose();
-                                        
-                                        currentXPathBuilder.Length = originalLength00000008;
-                                    }
-                                    else if (ReferenceEquals(reader.LocalName, e_child_important))
+                                    else if (object.ReferenceEquals(reader.LocalName, achild00000008))
                                     {
                                         ++counter00000005;
-                                        int originalLength00000009 = currentXPathBuilder.Length;
-                                        currentXPathBuilder.AddLevel("child.important", counter00000005);
-                                        
+                                        int originalLength0000000b = currentXPathBuilder.Length;
+                                        currentXPathBuilder.AddLevel("child", counter00000005);
                                         XmlReader localReader = reader.ReadSubtree();
                                         localReader.MoveToContent();
-                                        yield return new ReadResult(currentXPathBuilder, localReader, "/root/child.important/");
+                                        yield return new ReadResult(currentXPathBuilder, localReader, new string[] { "/root/child", "/root/child/" });
                                         localReader.Dispose();
-                                        
-                                        currentXPathBuilder.Length = originalLength00000009;
+                                        currentXPathBuilder.Length = originalLength0000000b;
                                     }
-                                    else if (ReferenceEquals(reader.LocalName, e_child_3))
+                                    else if (object.ReferenceEquals(reader.LocalName, achild300000009))
                                     {
                                         ++counter00000006;
-                                        int originalLength0000000a = currentXPathBuilder.Length;
-                                        currentXPathBuilder.AddLevel("child-3", counter00000006);
-                                        int counter0000000b = 0;
-                                        
-                                        while (reader.NodeType != XmlNodeType.EndElement || !ReferenceEquals(reader.LocalName, e_child_3))
+                                        int originalLength0000000c = currentXPathBuilder.Length;
+                                        currentXPathBuilder.AddLevel("child3", counter00000006);
+                                        int counter0000000d = 0;
+                                        object agrandchild10000000e = reader.NameTable.Add("grandchild1");
+                                        while (reader.NodeType != XmlNodeType.EndElement || !object.ReferenceEquals(reader.LocalName, achild300000009))
                                         {
                                             if (reader.NodeType == XmlNodeType.Element)
                                             {
-                                                if (ReferenceEquals(reader.LocalName, e_grandchild1))
+                                                if (object.ReferenceEquals(reader.LocalName, agrandchild10000000e))
                                                 {
-                                                    ++counter0000000b;
-                                                    int originalLength0000000c = currentXPathBuilder.Length;
-                                                    currentXPathBuilder.AddLevel("grandchild1", counter0000000b);
-                                                    
+                                                    ++counter0000000d;
+                                                    int originalLength0000000f = currentXPathBuilder.Length;
+                                                    currentXPathBuilder.AddLevel("grandchild1", counter0000000d);
                                                     XmlReader localReader = reader.ReadSubtree();
                                                     localReader.MoveToContent();
-                                                    yield return new ReadResult(currentXPathBuilder, localReader, "root/child-3/grandchild1");
+                                                    yield return new ReadResult(currentXPathBuilder, localReader, "root/child3/grandchild1");
                                                     localReader.Dispose();
-                                                    
-                                                    currentXPathBuilder.Length = originalLength0000000c;
+                                                    currentXPathBuilder.Length = originalLength0000000f;
                                                 }
-                                                else if (!ReferenceEquals(reader.LocalName, e_child_3))
+                                                else if (!object.ReferenceEquals(reader.LocalName, achild300000009))
                                                 {
                                                     reader.Skip();
                                                 }
@@ -143,9 +119,9 @@ namespace XPathReader.Generated
                                                 reader.Read();
                                             }
                                         }
-                                        currentXPathBuilder.Length = originalLength0000000a;
+                                        currentXPathBuilder.Length = originalLength0000000c;
                                     }
-                                    else if (!ReferenceEquals(reader.LocalName, e_root))
+                                    else if (!object.ReferenceEquals(reader.LocalName, aroot00000002))
                                     {
                                         reader.Skip();
                                     }
@@ -159,7 +135,7 @@ namespace XPathReader.Generated
                                     reader.Read();
                                 }
                             }
-                            currentXPathBuilder.Length = originalLength00000002;
+                            currentXPathBuilder.Length = originalLength00000003;
                         }
                         else
                         {
@@ -178,107 +154,82 @@ namespace XPathReader.Generated
         {
             using (reader)
             {
-                string e_root = reader.NameTable.Add("root");
-                string e_child1 = reader.NameTable.Add("child1");
-                string e_child = reader.NameTable.Add("child");
-                string e_child_important = reader.NameTable.Add("child.important");
-                string e_child_3 = reader.NameTable.Add("child-3");
-                string e_grandchild1 = reader.NameTable.Add("grandchild1");
                 cancellationToken.ThrowIfCancellationRequested();
                 await reader.MoveToContentAsync().ConfigureAwait(false);
                 XPathBuilder currentXPathBuilder = new XPathBuilder();
                 while (!reader.EOF)
                 {
                     int counter00000001 = 0;
-                    
+                    object aroot00000002 = reader.NameTable.Add("root");
                     if (reader.NodeType == XmlNodeType.Element)
                     {
-                        if (ReferenceEquals(reader.LocalName, e_root))
+                        if (object.ReferenceEquals(reader.LocalName, aroot00000002))
                         {
                             ++counter00000001;
-                            int originalLength00000002 = currentXPathBuilder.Length;
+                            int originalLength00000003 = currentXPathBuilder.Length;
                             currentXPathBuilder.AddLevel("root");
                             if (counter00000001 != 1)
                             {
                                 throw new XmlException("More than one root found in the document.");
                             }
-                            int counter00000003 = 0;
                             int counter00000004 = 0;
                             int counter00000005 = 0;
                             int counter00000006 = 0;
-                            
-                            while (reader.NodeType != XmlNodeType.EndElement || !ReferenceEquals(reader.LocalName, e_root))
+                            object achild100000007 = reader.NameTable.Add("child1");
+                            object achild00000008 = reader.NameTable.Add("child");
+                            object achild300000009 = reader.NameTable.Add("child3");
+                            while (reader.NodeType != XmlNodeType.EndElement || !object.ReferenceEquals(reader.LocalName, aroot00000002))
                             {
                                 if (reader.NodeType == XmlNodeType.Element)
                                 {
-                                    if (ReferenceEquals(reader.LocalName, e_child1))
+                                    if (object.ReferenceEquals(reader.LocalName, achild100000007))
                                     {
-                                        ++counter00000003;
-                                        int originalLength00000007 = currentXPathBuilder.Length;
-                                        currentXPathBuilder.AddLevel("child1", counter00000003);
-                                        
+                                        ++counter00000004;
+                                        int originalLength0000000a = currentXPathBuilder.Length;
+                                        currentXPathBuilder.AddLevel("child1", counter00000004);
                                         XmlReader localReader = reader.ReadSubtree();
                                         cancellationToken.ThrowIfCancellationRequested();
                                         await localReader.MoveToContentAsync().ConfigureAwait(false);
                                         yield return new ReadResult(currentXPathBuilder, localReader, "/root/child1");
                                         localReader.Dispose();
-                                        
-                                        currentXPathBuilder.Length = originalLength00000007;
+                                        currentXPathBuilder.Length = originalLength0000000a;
                                     }
-                                    else if (ReferenceEquals(reader.LocalName, e_child))
-                                    {
-                                        ++counter00000004;
-                                        int originalLength00000008 = currentXPathBuilder.Length;
-                                        currentXPathBuilder.AddLevel("child", counter00000004);
-                                        
-                                        XmlReader localReader = reader.ReadSubtree();
-                                        cancellationToken.ThrowIfCancellationRequested();
-                                        await localReader.MoveToContentAsync().ConfigureAwait(false);
-                                        yield return new ReadResult(currentXPathBuilder, localReader, "/root/child");
-                                        localReader.Dispose();
-                                        
-                                        currentXPathBuilder.Length = originalLength00000008;
-                                    }
-                                    else if (ReferenceEquals(reader.LocalName, e_child_important))
+                                    else if (object.ReferenceEquals(reader.LocalName, achild00000008))
                                     {
                                         ++counter00000005;
-                                        int originalLength00000009 = currentXPathBuilder.Length;
-                                        currentXPathBuilder.AddLevel("child.important", counter00000005);
-                                        
+                                        int originalLength0000000b = currentXPathBuilder.Length;
+                                        currentXPathBuilder.AddLevel("child", counter00000005);
                                         XmlReader localReader = reader.ReadSubtree();
                                         cancellationToken.ThrowIfCancellationRequested();
                                         await localReader.MoveToContentAsync().ConfigureAwait(false);
-                                        yield return new ReadResult(currentXPathBuilder, localReader, "/root/child.important/");
+                                        yield return new ReadResult(currentXPathBuilder, localReader, new string[] { "/root/child", "/root/child/" });
                                         localReader.Dispose();
-                                        
-                                        currentXPathBuilder.Length = originalLength00000009;
+                                        currentXPathBuilder.Length = originalLength0000000b;
                                     }
-                                    else if (ReferenceEquals(reader.LocalName, e_child_3))
+                                    else if (object.ReferenceEquals(reader.LocalName, achild300000009))
                                     {
                                         ++counter00000006;
-                                        int originalLength0000000a = currentXPathBuilder.Length;
-                                        currentXPathBuilder.AddLevel("child-3", counter00000006);
-                                        int counter0000000b = 0;
-                                        
-                                        while (reader.NodeType != XmlNodeType.EndElement || !ReferenceEquals(reader.LocalName, e_child_3))
+                                        int originalLength0000000c = currentXPathBuilder.Length;
+                                        currentXPathBuilder.AddLevel("child3", counter00000006);
+                                        int counter0000000d = 0;
+                                        object agrandchild10000000e = reader.NameTable.Add("grandchild1");
+                                        while (reader.NodeType != XmlNodeType.EndElement || !object.ReferenceEquals(reader.LocalName, achild300000009))
                                         {
                                             if (reader.NodeType == XmlNodeType.Element)
                                             {
-                                                if (ReferenceEquals(reader.LocalName, e_grandchild1))
+                                                if (object.ReferenceEquals(reader.LocalName, agrandchild10000000e))
                                                 {
-                                                    ++counter0000000b;
-                                                    int originalLength0000000c = currentXPathBuilder.Length;
-                                                    currentXPathBuilder.AddLevel("grandchild1", counter0000000b);
-                                                    
+                                                    ++counter0000000d;
+                                                    int originalLength0000000f = currentXPathBuilder.Length;
+                                                    currentXPathBuilder.AddLevel("grandchild1", counter0000000d);
                                                     XmlReader localReader = reader.ReadSubtree();
                                                     cancellationToken.ThrowIfCancellationRequested();
                                                     await localReader.MoveToContentAsync().ConfigureAwait(false);
-                                                    yield return new ReadResult(currentXPathBuilder, localReader, "root/child-3/grandchild1");
+                                                    yield return new ReadResult(currentXPathBuilder, localReader, "root/child3/grandchild1");
                                                     localReader.Dispose();
-                                                    
-                                                    currentXPathBuilder.Length = originalLength0000000c;
+                                                    currentXPathBuilder.Length = originalLength0000000f;
                                                 }
-                                                else if (!ReferenceEquals(reader.LocalName, e_child_3))
+                                                else if (!object.ReferenceEquals(reader.LocalName, achild300000009))
                                                 {
                                                     cancellationToken.ThrowIfCancellationRequested();
                                                     await reader.SkipAsync().ConfigureAwait(false);
@@ -295,9 +246,9 @@ namespace XPathReader.Generated
                                                 await reader.ReadAsync().ConfigureAwait(false);
                                             }
                                         }
-                                        currentXPathBuilder.Length = originalLength0000000a;
+                                        currentXPathBuilder.Length = originalLength0000000c;
                                     }
-                                    else if (!ReferenceEquals(reader.LocalName, e_root))
+                                    else if (!object.ReferenceEquals(reader.LocalName, aroot00000002))
                                     {
                                         cancellationToken.ThrowIfCancellationRequested();
                                         await reader.SkipAsync().ConfigureAwait(false);
@@ -314,7 +265,7 @@ namespace XPathReader.Generated
                                     await reader.ReadAsync().ConfigureAwait(false);
                                 }
                             }
-                            currentXPathBuilder.Length = originalLength00000002;
+                            currentXPathBuilder.Length = originalLength00000003;
                         }
                         else
                         {
