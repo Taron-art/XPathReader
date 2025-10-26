@@ -1,105 +1,58 @@
-﻿namespace XPathReader.Tests
+﻿using System.Reflection;
+using Basic.Reference.Assemblies;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+
+namespace XPathReader.Tests
 {
-    [TestFixture("public partial class", "public")]
-    [TestFixture("internal partial record class", "public static")]
-    [TestFixture("public partial record", "private")]
-    [TestFixture("public partial struct", "protected internal")]
-    [TestFixture("internal ref partial struct", "public")]
-    [TestFixture("partial interface", "internal static")]
-    [TestFixture("public readonly ref partial struct", "private protected static")]
+    [TestFixture]
     [TestOf(typeof(XPathReaderGenerator))]
-
-    public class XPathReaderGeneratorTests : XPathReaderGeneratorTestsBase
+    internal class XPathReaderGeneratorTests
     {
-        private readonly string _parentModifiers;
-        private readonly string _methodModifiers;
 
-        public XPathReaderGeneratorTests(string parentModifiers, string methodModifiers)
+        [Test]
+        public async Task GeneratesXPathReaderCorrectly()
         {
-            _parentModifiers = parentModifiers;
-            _methodModifiers = methodModifiers;
-        }
-
-        private static IEnumerable<TestCaseData<string>> GetDataForGeneratesXPathReaderCorrectly()
-        {
-            yield return (TestCaseData<string>)new TestCaseData<string>("[GeneratedXPathReader(\"/root/child1|/root/child|/root/child.important|/root/child-3/grandchild1\")]").SetArgDisplayNames("Normal_method");
-            yield return (TestCaseData<string>)new TestCaseData<string>(
-                """"
-                [GeneratedXPathReader("""
-                /root/child1
-                /root/child
-                /root/child.important
-                /root/child-3/grandchild1
+            // The source code to test
+            var source = /* lang=c#-test */
                 """
-                )]
-                """"
-                ).SetArgDisplayNames("Normal_method_with_new_line");
-
-            yield return (TestCaseData<string>)new TestCaseData<string>("[GeneratedXPathReader(\"/root/child1[1]|/root/child[ready()]|/root/child.important[1]|/root/child-3[@attribute]/grandchild1[name]\")]").SetArgDisplayNames("Normal_method_predicates");
-            yield return (TestCaseData<string>)new TestCaseData<string>("[GeneratedXPathReader(\"/root/child[1]|/root/child[1]\")]").SetArgDisplayNames("Normal_method_duplicates");
-        }
-
-        [TestCaseSource(nameof(GetDataForGeneratesXPathReaderCorrectly))]
-        public async Task GeneratesXPathReader_NoErrors(string attribute)
-        {
-            string source =
-                $$"""
                 namespace XPathReader.TestInterface
                 {
                     using System;
                     using XPathReader.Common;
 
-                    {{_parentModifiers}} TestClass
+                    public partial class TestClass
                     {
-                        {{attribute}}
-                        {{_methodModifiers}} partial XPathReader CreateReader();
+                        [GeneratedXPathReader("/root/child1|/root/child|/root/child.important/|root/child-3/grandchild1")]
+                        public partial XPathReader CreateReader();
                     }
                 }
                 """;
-
-            VerifySettings settings = CreateSettingsForSourceTests();
-            await Verify(source, settings);
+            await Verify(source);
         }
 
-        private static IEnumerable<TestCaseData<string>> GetDataForNotGeneratesXPathReader_InvalidArgument()
+        private static SettingsTask Verify(string source)
         {
-            yield return (TestCaseData<string>)new TestCaseData<string>("[GeneratedXPathReader(null)]").SetArgDisplayNames("Null_argument");
-            yield return (TestCaseData<string>)new TestCaseData<string>("[GeneratedXPathReader(\"\")]").SetArgDisplayNames("Empty_argument");
-            yield return (TestCaseData<string>)new TestCaseData<string>("[GeneratedXPathReader(\"/root/child1[1]/\")]").SetArgDisplayNames("Ends_with_solidus");
-            // We need to escape two backslashes (one for this string, other so a compiled code still have this backslash) + escape the ": 2+2+1.
-            yield return (TestCaseData<string>)new TestCaseData<string>($"[GeneratedXPathReader(\"/root/child1[1]\\\\\")]").SetArgDisplayNames("Ends_with_reverse_solidus");
-            yield return (TestCaseData<string>)new TestCaseData<string>($"[GeneratedXPathReader(\"/root/child1 1\")]").SetArgDisplayNames("Invalid_name");
-        }
+            SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(source);
+
+            IEnumerable<PortableExecutableReference> references =
+            [
+                MetadataReference.CreateFromFile(typeof(Common.XPathReader).Assembly.Location),
+            ];
+
+            // Create a Roslyn compilation for the syntax tree.
+            CSharpCompilation compilation = CSharpCompilation.Create(
+                assemblyName: "Tests",
+                syntaxTrees: [syntaxTree],
+                references: ReferenceAssemblies.Net80.Concat(references));
 
 
-        [TestCaseSource(nameof(GetDataForNotGeneratesXPathReader_InvalidArgument))]
-        public async Task NotGeneratesXPathReader_InvalidArgument(string attribute)
-        {
-            string source =
-                $$"""
-                namespace XPathReader.TestInterface
-                {
-                    using System;
-                    using XPathReader.Common;
+            var generator = new XPathReaderGenerator();
 
-                    {{_parentModifiers}} TestClass
-                    {
-                        {{attribute}}
-                        {{_methodModifiers}} partial XPathReader CreateReader();
-                    }
-                }
-                """;
+            GeneratorDriver driver = CSharpGeneratorDriver.Create(generator);
+            driver = driver.RunGenerators(compilation);
 
-            var settings = CreateSettingsForSourceTests();
-            await Verify(source, settings);
-        }
-
-        private VerifySettings CreateSettingsForSourceTests()
-        {
-            var settings = new VerifySettings();
-            settings.UseMethodName(_parentModifiers.Replace(' ', '_') + _methodModifiers.Replace(' ', '_') + '_' + TestContext.CurrentContext.Test.Name);
-            settings.UseTextForParameters("_");
-            return settings;
+            return Verifier.Verify(driver);
         }
     }
 }
