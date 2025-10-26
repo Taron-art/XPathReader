@@ -1,5 +1,4 @@
-﻿using System.IO;
-using ARTX.XPath;
+﻿using ARTX.XPath;
 using ARTX.XPath.Internal;
 
 namespace ARTX.XPathReader.Tests.Smoke_Tests
@@ -19,19 +18,9 @@ namespace ARTX.XPathReader.Tests.Smoke_Tests
         private static partial XPath.XPathReader EmptyLeafElementReader();
 
         [Test]
-        public void UkraineXmlReader_ReturnsDifferentData([Values] bool useTextReader)
+        public void UkraineXmlReader_ReturnsDifferentData()
         {
-            TextReader textReader = null!;
-            Stream stream = null!;
-            if (useTextReader)
-            {
-                Stream testFileStream = File.OpenRead("Smoke Tests/TestFile.xml");
-                textReader = new StreamReader(testFileStream);
-            }
-            else
-            {
-                stream = File.OpenRead("Smoke Tests/TestFile.xml");
-            }
+            Stream testFile = File.OpenRead("Smoke Tests/TestFile.xml");
 
             var firstInstance = UkraineXmlReader();
             var secondInstance = UkraineXmlReader();
@@ -40,7 +29,7 @@ namespace ARTX.XPathReader.Tests.Smoke_Tests
             List<string> regions = [];
             List<string> companies = [];
             List<PersistedReadResult> languages = [];
-            foreach (ReadResult result in (useTextReader ? UkraineXmlReader().Read(textReader) : UkraineXmlReader().Read(stream)))
+            foreach (ReadResult result in UkraineXmlReader().Read(testFile))
             {
                 Assert.That(result.NodeReader.NameTable, Is.InstanceOf<ThreadSafeNameTable>());
                 switch (result.RequestedXPath)
@@ -86,24 +75,14 @@ namespace ARTX.XPathReader.Tests.Smoke_Tests
         }
 
         [Test]
-        public async Task UkraineXmlReader_ReturnsDifferentDataAsync([Values] bool useTextReader)
+        public async Task UkraineXmlReader_ReturnsDifferentDataAsync()
         {
-            TextReader textReader = null!;
-            Stream stream = null!;
-            if (useTextReader)
-            {
-                Stream testFileStream = File.OpenRead("Smoke Tests/TestFile.xml");
-                textReader = new StreamReader(testFileStream);
-            }
-            else
-            {
-                stream = File.OpenRead("Smoke Tests/TestFile.xml");
-            }
+            Stream testFile = File.OpenRead("Smoke Tests/TestFile.xml");
 
             List<string> regions = [];
             List<string> companies = [];
             List<PersistedReadResult> languages = [];
-            await foreach (ReadResult result in (useTextReader ? UkraineXmlReader().ReadAsync(textReader) : UkraineXmlReader().ReadAsync(stream)))
+            await foreach (ReadResult result in UkraineXmlReader().ReadAsync(testFile))
             {
                 Assert.That(result.NodeReader.NameTable, Is.InstanceOf<ThreadSafeNameTable>());
 
@@ -156,7 +135,7 @@ namespace ARTX.XPathReader.Tests.Smoke_Tests
         [CancelAfter(100)]
         public void EmptyElementReader_ReturnsEmptyNode_WhenPresent(CancellationToken testCancellationToken)
         {
-            var testFile = new StringReader(
+            Stream testFile = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(
                 """
                 <a>
                     <b/>
@@ -166,7 +145,7 @@ namespace ARTX.XPathReader.Tests.Smoke_Tests
                     </b>
                     <b/>
                 </a>
-                """);
+                """));
             List<string> elements = [];
             foreach (ReadResult result in EmptyLeafElementReader().Read(testFile))
             {

@@ -74,59 +74,6 @@ namespace ARTX.XPath
         }
 
         /// <summary>
-        /// Reads XML data from the provided stream and yields XPath matches.
-        /// </summary>
-        /// <param name="input">
-        /// The text reader from which to read the XML data. 
-        /// A text reader returns a stream of Unicode characters, so the encoding specified in the XML declaration isn't used by the XML reader to decode the data stream.
-        /// </param>
-        /// <returns>An enumerable collection of <see cref="ReadResult"/> containing matched XPath nodes.</returns>
-        /// <remarks>
-        /// This method uses default XML reader settings with comments ignored.
-        /// The name table is thread-safe and shared across all reads.
-        /// </remarks>
-        /// <exception cref="ArgumentNullException">Thrown if the input stream is null.</exception>
-        /// <exception cref="XmlException">Incorrect XML encountered in the input stream.</exception>
-        /// <exception cref="InvalidOperationException">An <see cref="XmlReader"/> method was called before a previous asynchronous operation finished.</exception>
-        public IEnumerable<ReadResult> Read(TextReader input)
-        {
-            return Read(input, _syncSettings ??= CreateXmlSettings(false), null);
-        }
-
-        /// <summary>
-        /// Reads XML data from the provided stream and yields XPath matches.
-        /// </summary>
-        /// <param name="input">
-        /// The text reader from which to read the XML data. 
-        /// A text reader returns a stream of Unicode characters, so the encoding specified in the XML declaration isn't used by the XML reader to decode the data stream.
-        /// </param>
-        /// <param name="xmlReaderSettings">Custom XML reader settings for controlling the XML parsing behavior.</param>
-        /// <param name="inputContext">The XML parser context for custom XML parsing scenarios.</param>
-        /// <returns>An enumerable collection of <see cref="ReadResult"/> containing matched XPath nodes.</returns>
-        /// <remarks>
-        /// If the provided XML reader settings don't have a name table assigned,
-        /// the reader's thread-safe name table will be used.
-        /// </remarks>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="input"/> or <paramref name="xmlReaderSettings"/> is null.</exception>
-        /// <exception cref="XmlException">Incorrect XML encountered in the input stream.</exception>
-        /// <exception cref="InvalidOperationException">An <see cref="XmlReader"/> method was called before a previous asynchronous operation finished.</exception>
-        public IEnumerable<ReadResult> Read(TextReader input, XmlReaderSettings xmlReaderSettings, XmlParserContext? inputContext)
-        {
-            if (xmlReaderSettings is null)
-            {
-                throw new ArgumentNullException(nameof(xmlReaderSettings));
-            }
-
-            if (xmlReaderSettings.NameTable is null && inputContext?.NameTable is null)
-            {
-                xmlReaderSettings.NameTable = _nameTable;
-            }
-
-            XmlReader xmlReader = XmlReader.Create(input, xmlReaderSettings, inputContext);
-            return ReadInternal(xmlReader);
-        }
-
-        /// <summary>
         /// Reads XML data from the provided <see cref="XmlReader"/> and yields XPath matches.
         /// </summary>
         /// <remarks>
@@ -199,67 +146,6 @@ namespace ARTX.XPath
                 throw new ArgumentNullException(nameof(xmlReaderSettings));
             }
 
-            cancellationToken.ThrowIfCancellationRequested();
-
-            if (xmlReaderSettings.NameTable is null && inputContext?.NameTable is null)
-            {
-                xmlReaderSettings.NameTable = _nameTable;
-            }
-
-            XmlReader xmlReader = XmlReader.Create(input, xmlReaderSettings, inputContext);
-            return ReadInternalAsync(xmlReader, cancellationToken);
-        }
-
-        /// <summary>
-        /// Asynchronously reads XML data from the provided stream and yields XPath matches.
-        /// </summary>
-        /// <param name="input">
-        /// The text reader from which to read the XML data. 
-        /// A text reader returns a stream of Unicode characters, so the encoding specified in the XML declaration isn't used by the XML reader to decode the data stream.
-        /// </param>
-        /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
-        /// <returns>An asynchronous enumerable collection of <see cref="ReadResult"/> containing matched XPath nodes.</returns>
-        /// <remarks>
-        /// This method uses default XML reader settings with comments ignored and async reading enabled.
-        /// The name table is thread-safe and shared across all reads.
-        /// </remarks>
-        /// <exception cref="ArgumentNullException">Thrown if the input stream is null.</exception>
-        /// <exception cref="XmlException">Incorrect XML encountered in the input stream.</exception>
-        /// <exception cref="InvalidOperationException">An <see cref="XmlReader"/> method was called before a previous asynchronous operation finished.</exception>
-        /// <exception cref="OperationCanceledException">A <paramref name="cancellationToken"> was canceled.</paramref> </exception>
-        public IAsyncEnumerable<ReadResult> ReadAsync(TextReader input, CancellationToken cancellationToken = default)
-        {
-            return ReadAsync(input, _asyncSettings ??= CreateXmlSettings(true), null, cancellationToken);
-        }
-
-        /// <summary>
-        /// Asynchronously reads XML data from the provided stream using custom XML reader settings.
-        /// </summary>
-        /// <param name="input">
-        /// The text reader from which to read the XML data. 
-        /// A text reader returns a stream of Unicode characters, so the encoding specified in the XML declaration isn't used by the XML reader to decode the data stream.
-        /// </param>
-        /// <param name="xmlReaderSettings">Custom XML reader settings for controlling the XML parsing behavior.</param>
-        /// <param name="inputContext">The XML parser context for custom XML parsing scenarios.</param>
-        /// <param name="cancellationToken">A token to cancel the asynchronous operation.</param>
-        /// <returns>An asynchronous enumerable collection of <see cref="ReadResult"/> containing matched XPath nodes.</returns>
-        /// <remarks>
-        /// If the provided XML reader settings don't have a name table assigned,
-        /// the reader's thread-safe name table will be used.
-        /// </remarks>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="input"/> or <paramref name="xmlReaderSettings"/> is null.</exception>
-        /// <exception cref="XmlException">Incorrect XML encountered in the input stream.</exception>
-        /// <exception cref="InvalidOperationException">An <see cref="XmlReader"/> method was called before a previous asynchronous operation finished.</exception>
-        /// <exception cref="OperationCanceledException">A <paramref name="cancellationToken"> was canceled.</paramref> </exception>
-        public IAsyncEnumerable<ReadResult> ReadAsync(TextReader input, XmlReaderSettings xmlReaderSettings, XmlParserContext? inputContext, CancellationToken cancellationToken = default)
-        {
-            if (xmlReaderSettings is null)
-            {
-                throw new ArgumentNullException(nameof(xmlReaderSettings));
-            }
-
-            cancellationToken.ThrowIfCancellationRequested();
-
             if (xmlReaderSettings.NameTable is null && inputContext?.NameTable is null)
             {
                 xmlReaderSettings.NameTable = _nameTable;
@@ -282,15 +168,12 @@ namespace ARTX.XPath
         /// <exception cref="InvalidOperationException">An <see cref="XmlReader"/> method was called before a previous asynchronous operation finished.</exception>
         /// <exception cref="InvalidOperationException">The <paramref name="reader"/> isn't positioned on an element when this method is called.</exception>
         /// <exception cref="XmlException">Incorrect XML encountered in the input stream.</exception>
-        /// <exception cref="OperationCanceledException">A <paramref name="cancellationToken"> was canceled.</paramref> </exception>
         public IAsyncEnumerable<ReadResult> ReadFromSubtreeAsync(XmlReader reader, CancellationToken cancellationToken = default)
         {
             if (reader is null)
             {
                 throw new ArgumentNullException(nameof(reader));
             }
-
-            cancellationToken.ThrowIfCancellationRequested();
 
             XmlReader subTreeReader = reader.ReadSubtree();
             return ReadInternalAsync(subTreeReader, cancellationToken);
