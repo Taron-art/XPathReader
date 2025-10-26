@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 
-namespace ARTX.XPathReader
+namespace XPathReader
 {
     internal sealed record XPathReaderDataToGenerate(MemberInfo MethodInfo, bool IsProperty, Location DiagnosticLocation, string MemberName, string Modifiers, string XPaths, CompilationData CompilationData)
     {

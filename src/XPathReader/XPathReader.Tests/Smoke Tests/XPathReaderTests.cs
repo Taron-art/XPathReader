@@ -1,18 +1,18 @@
-﻿using ARTX.XPath;
-using ARTX.XPath.Internal;
+﻿using XPathReader.Common;
+using XPathReader.Common.Internal;
 
-namespace ARTX.XPathReader.Tests.Smoke_Tests
+namespace XPathReader.Tests.Smoke_Tests
 {
     [TestFixture]
-    [TestOf(typeof(ARTX.XPath.XPathReader))]
+    [TestOf(typeof(Common.XPathReader))]
     internal partial class XPathReaderTests
     {
 
         [GeneratedXPathReader("/ukraine/geography/regions/region/name|/ukraine/economy/sectors/sector/companies/company|/ukraine/culture/languages/language")]
-        private static partial ARTX.XPath.XPathReader UkraineXmlReader();
+        private static partial Common.XPathReader UkraineXmlReader();
 
         [GeneratedXPathReader("/company/name")]
-        private static partial ARTX.XPath.XPathReader CompanyNameReader { get; }
+        private static partial Common.XPathReader CompanyNameReader { get; }
 
         [Test]
         public void UkraineXmlReader_ReturnsDifferentData()

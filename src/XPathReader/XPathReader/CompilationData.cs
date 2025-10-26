@@ -1,4 +1,4 @@
-﻿namespace ARTX.XPathReader
+﻿namespace XPathReader
 {
     internal record CompilationData
     {

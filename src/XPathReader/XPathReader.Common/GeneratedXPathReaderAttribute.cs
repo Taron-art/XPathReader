@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ARTX.XPath
+namespace XPathReader.Common
 {
 
     /// <summary>

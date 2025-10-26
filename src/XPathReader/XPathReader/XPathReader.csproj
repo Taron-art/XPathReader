@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
 	<IncludeBuildOutput>false</IncludeBuildOutput>
 	<Nullable>enable</Nullable>
 	<ImplicitUsings>true</ImplicitUsings>
@@ -9,40 +9,7 @@
 	<SignAssembly>True</SignAssembly>
 	<AssemblyOriginatorKeyFile>..\xpathreader.snk</AssemblyOriginatorKeyFile>
 	<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-	<AssemblyName>$(MSBuildProjectName).SourceGenerator</AssemblyName>
-	<RootNamespace>ARTX.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
-	<PackageId>ARTX.XPathReader</PackageId>
-	<Authors>Artur Kharin</Authors>
-	<PublishRepositoryUrl>true</PublishRepositoryUrl>
-	<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
-	<Title>XPathReader</Title>
-	<Copyright>Artur Kharin 2025</Copyright>
-	<PackageTags>xml;xpath;source generation</PackageTags>
-	<Description>Allows to generate source that uses XmlReader to read a XML document and returns entries related to provided XPaths.</Description>
-	<PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
-    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.1|AnyCPU'">
-    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
-    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.1|AnyCPU'">
-    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="bin\**" />
-    <EmbeddedResource Remove="bin\**" />
-    <None Remove="bin\**" />
-  </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="IsExternalInit" Version="1.0.3">
 		  <PrivateAssets>all</PrivateAssets>
@@ -51,33 +18,19 @@
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="4.14.0" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.13.0" PrivateAssets="all" />
 	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.0.0" />
-	</ItemGroup>
-	<ItemGroup>
-	  <None Remove="bin\Debug\netstandard2.0\\netstandard2.0\XPathReader.SourceGenerator.dll" />
-	</ItemGroup>
+
 	<ItemGroup>
 		<!-- Pack the generator dll in the analyzers/dotnet/cs path -->
-		<None Include="$(OutputPath)\netstandard2.0\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+
+		<!-- Pack the additional dll in the analyzers/dotnet/cs path -->
+		<None Include="$(OutputPath)\XPathReader.Common.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 
 		<!-- Pack the additional dll in the lib\netstandard2.0 path -->
-		<None Include="$(OutputPath)\netstandard2.0\XPathReader.Common.dll" Pack="true" PackagePath="lib/netstandard2.0" Visible="false" />
-		<None Include="$(OutputPath)\netstandard2.0\XPathReader.Common.xml" Pack="true" PackagePath="lib/netstandard2.0" Visible="false" />
-		
-		<!-- Pack the additional dll in the lib\netstandard2.1 path -->
-		<None Include="$(OutputPath)\netstandard2.1\XPathReader.Common.dll" Pack="true" PackagePath="lib/netstandard2.1" Visible="false" />
-		<None Include="$(OutputPath)\netstandard2.1\XPathReader.Common.xml" Pack="true" PackagePath="lib/netstandard2.1" Visible="false" />
-		<None Include="..\..\..\LICENSE">
-		  <Pack>True</Pack>
-		  <PackagePath>\</PackagePath>
-		</None>
+		<None Include="$(OutputPath)\XPathReader.Common.dll" Pack="true" PackagePath="lib\netstandard2.0" Visible="true" />
 
-		<None Include="install.ps1" Pack="true" PackagePath="tools" Visible="true" />
-		<None Include="uninstall.ps1" Pack="true" PackagePath="tools" Visible="true" />
-		
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\XPathReader.Common\XPathReader.Common.csproj" PrivateAssets="All" />
+	  <ProjectReference Include="..\XPathReader.Common\XPathReader.Common.csproj" />
 	</ItemGroup>
 </Project>

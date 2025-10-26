@@ -1,8 +1,8 @@
 ﻿using System.Text;
-using ARTX.XPathReader.XPathParsing;
 using XPathReader.Utils;
+using XPathReader.XPathParsing;
 
-namespace ARTX.XPathReader
+namespace XPathReader
 {
     internal class ReadXmlEmitter
     {

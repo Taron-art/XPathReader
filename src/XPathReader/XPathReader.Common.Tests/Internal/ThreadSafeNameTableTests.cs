@@ -1,6 +1,6 @@
-﻿using ARTX.XPath.Internal;
+﻿using XPathReader.Common.Internal;
 
-namespace ARTX.Common.Tests.Internal
+namespace XPathReader.Common.Tests.Internal
 {
     [TestFixture]
     [TestOf(typeof(ThreadSafeNameTable))]

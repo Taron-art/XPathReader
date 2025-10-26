@@ -1,15 +1,15 @@
 ﻿using System.Collections.Immutable;
-using ARTX.XPathReader.XPathParsing;
 using Microsoft.CodeAnalysis;
 using XPathReader.Utils;
+using XPathReader.XPathParsing;
 
-namespace ARTX.XPathReader
+namespace XPathReader
 {
     internal class XPathReaderEmitter
     {
         /// <summary>Code for a [GeneratedCode] attribute to put on the top-level generated members.</summary>
         private static readonly string _generatedCodeAttribute = $"GeneratedCodeAttribute(\"{typeof(XPathReaderGenerator).Assembly.GetName().Name}\", \"{typeof(XPathReaderGenerator).Assembly.GetName().Version}\")";
-        private const string GeneratedNamespace = "ARTX.XPath.Generated";
+        private const string GeneratedNamespace = "XPathReader.Generated";
         private const int NumberOfXPathsInComment = 10;
         private static readonly string[] _headers =
 [
@@ -19,12 +19,22 @@ namespace ARTX.XPathReader
 
         int _id = 0;
 
+        private readonly HashSet<string> _names = new();
+
         internal void Process(SourceProductionContext context, ImmutableArray<GatheringResult> array)
         {
             XPathParser xPathParser = new();
             foreach (GatheringResult result in array.Where(result => result.XPathToGenerate is not null))
             {
-                result.XPathToGenerate!.GeneratedName = $"{result.XPathToGenerate.MethodInfo.Name}_{_id++}";
+                if (_names.Contains(result.XPathToGenerate!.MethodInfo.Name))
+                {
+                    result.XPathToGenerate.GeneratedName = $"{result.XPathToGenerate.MethodInfo.Name}_{_id++}";
+                }
+                else
+                {
+                    _names.Add(result.XPathToGenerate.MethodInfo.Name);
+                    result.XPathToGenerate.GeneratedName = result.XPathToGenerate.MethodInfo.Name;
+                }
 
                 (XPathTree Tree, HashSet<string> XPaths) parseResult;
                 try
@@ -92,7 +102,7 @@ namespace ARTX.XPathReader
             writer.WriteLine($"/// <summary>Cached instance for <see cref=\"{xpathToGenerate.MemberName}\"/>.</summary>");
             writer.WriteLine($"[global::System.CodeDom.Compiler.{_generatedCodeAttribute}]");
             bool isStatic = xpathToGenerate.Modifiers.Contains("static");
-            writer.WriteLine($"private{(isStatic ? " static" : string.Empty)} global::ARTX.XPath.XPathReader? __f{xpathToGenerate.GeneratedName};");
+            writer.WriteLine($"private{(isStatic ? " static" : string.Empty)} global::XPathReader.Common.XPathReader? __f{xpathToGenerate.GeneratedName};");
             writer.WriteLine();
 
             // Emit the partial method or property definition.
@@ -114,7 +124,7 @@ namespace ARTX.XPathReader
             writer.WriteLine("/// </code>");
             writer.WriteLine("/// </remarks>");
             writer.WriteLine($"[global::System.CodeDom.Compiler.{_generatedCodeAttribute}]");
-            writer.Write($"{xpathToGenerate.Modifiers} global::ARTX.XPath.XPathReader {xpathToGenerate.MemberName}");
+            writer.Write($"{xpathToGenerate.Modifiers} global::XPathReader.Common.XPathReader {xpathToGenerate.MemberName}");
             if (xpathToGenerate.IsProperty)
             {
                 writer.WriteLine();
@@ -144,14 +154,18 @@ namespace ARTX.XPathReader
             writer.OpenBrace();
 
             // We emit usings here now that we're inside of a namespace block and are no longer emitting code into
-            // a user's partial type.  We still must use global:: for not our namespace.
+            // a user's partial type.  We can now rely on binding rules mapping to these usings and don't need to
+            // use global-qualified names for the rest of the implementation.
+            writer.WriteLine("using System;");
             writer.WriteLine("using System.Collections.Generic;");
+            writer.WriteLine("using System.IO;");
             writer.WriteLine("using System.Threading;");
             writer.WriteLine("using System.Xml;");
+            writer.WriteLine("using System.Threading.Tasks;");
             writer.WriteLine("using System.CodeDom.Compiler;");
             writer.WriteLine("using System.Runtime.CompilerServices;");
-            writer.WriteLine("using ARTX.XPath;");
-            writer.WriteLine("using ARTX.XPath.Internal;");
+            writer.WriteLine("using XPathReader.Common;");
+            writer.WriteLine("using XPathReader.Common.Internal;");
             writer.WriteLine();
 
             writer.WriteLine($"[{_generatedCodeAttribute}]");

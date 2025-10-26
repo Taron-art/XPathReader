@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace ARTX.XPathReader.XPathParsing
+namespace XPathReader.XPathParsing
 {
     public abstract class XPathTreeElement
     {

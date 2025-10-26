@@ -1,13 +1,16 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
-using ARTX.XPath;
 using FakeItEasy;
 
-namespace ARTX.Common.Tests
+namespace XPathReader.Common.Tests
 {
     [TestFixture]
-    [TestOf(typeof(IEnumerableOfReadResultExtensions))]
     public class IEnumerableOfReadResultExtensionsTests
     {
         private const string _xml1 = """

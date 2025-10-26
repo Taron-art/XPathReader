@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace ARTX.XPathReader.Tests
+namespace XPathReader.Tests
 {
     public static class Initializer
     {

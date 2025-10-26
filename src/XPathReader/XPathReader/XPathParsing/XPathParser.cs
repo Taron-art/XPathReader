@@ -4,7 +4,7 @@ using System.Xml.XPath;
 using Microsoft.CodeAnalysis;
 using XPathReader.Utils;
 
-namespace ARTX.XPathReader.XPathParsing
+namespace XPathReader.XPathParsing
 {
     public class XPathParser
     {

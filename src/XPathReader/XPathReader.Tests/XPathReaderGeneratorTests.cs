@@ -1,4 +1,4 @@
-﻿namespace ARTX.XPathReader.Tests
+﻿namespace XPathReader.Tests
 {
     [TestFixture("public partial class", "public")]
     [TestFixture("internal partial record class", "public static")]
@@ -47,7 +47,7 @@
                 namespace XPathReader.TestInterface
                 {
                     using System;
-                    using ARTX.XPath;
+                    using XPathReader.Common;
 
                     {{_parentModifiers}} TestClass
                     {
@@ -69,7 +69,7 @@
                 namespace XPathReader.TestInterface
                 {
                     using System;
-                    using ARTX.XPath;
+                    using XPathReader.Common;
 
                     {{_parentModifiers}} TestClass
                     {
@@ -102,7 +102,7 @@
                 namespace XPathReader.TestInterface
                 {
                     using System;
-                    using ARTX.XPath;
+                    using XPathReader.Common;
 
                     {{_parentModifiers}} TestClass
                     {

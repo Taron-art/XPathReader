@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 
-namespace ARTX.XPathReader
+namespace XPathReader
 {
     internal static class Diagnostics
     {

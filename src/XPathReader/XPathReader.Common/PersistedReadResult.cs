@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Xml.Linq;
 
-namespace ARTX.XPath
+namespace XPathReader.Common
 {
     /// <summary>
     /// Represents the result of XML read operation, including the actual XPath encountered during the operation and the
