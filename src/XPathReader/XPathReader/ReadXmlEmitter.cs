@@ -147,7 +147,6 @@ namespace ARTX.XPathReader
                         }
 
                         writer.WriteLine("localReader.Dispose();");
-                        writer.WriteLineRead(); // Move to the next node after processing the subtree.
                         writer.WriteLine();
                     }
                 }

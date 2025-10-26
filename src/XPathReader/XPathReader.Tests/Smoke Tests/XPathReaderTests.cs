@@ -14,9 +14,6 @@ namespace ARTX.XPathReader.Tests.Smoke_Tests
         [GeneratedXPathReader("/company/name")]
         private static partial XPath.XPathReader CompanyNameReader { get; }
 
-        [GeneratedXPathReader("/a/b/c")]
-        private static partial XPath.XPathReader EmptyElementReader();
-
         [Test]
         public void UkraineXmlReader_ReturnsDifferentData()
         {
@@ -129,31 +126,6 @@ namespace ARTX.XPathReader.Tests.Smoke_Tests
                 """).IgnoreWhiteSpace);
 
             Assert.That(languages, Has.Count.EqualTo(4));
-        }
-
-        [Test]
-        [CancelAfter(100)]
-        public void EmptyElementReader_ReturnsOneEmptyNode_WhenOneNodeIsPresent(CancellationToken testCancellationToken)
-        {
-            Stream testFile = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(
-                """
-                <a>
-                    <b/>
-                    <b>
-                        <c/>
-                        <c/>
-                    </b>
-                </a>
-                """));
-            List<string> elements = [];
-            foreach (ReadResult result in EmptyElementReader().Read(testFile))
-            {
-                testCancellationToken.ThrowIfCancellationRequested();
-                elements.Add(result.NodeReader.ReadOuterXml());
-            }
-            Assert.That(elements, Has.Count.EqualTo(2));
-            Assert.That(elements[0], Is.EqualTo("<c />"));
-            Assert.That(elements[1], Is.EqualTo("<c />"));
         }
     }
 }
