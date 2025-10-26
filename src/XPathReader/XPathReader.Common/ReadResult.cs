@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Xml;
-using System.Xml.Linq;
 
 namespace XPathReader.Common
 {
@@ -17,7 +13,6 @@ namespace XPathReader.Common
     {
         private readonly string[]? _requestedXPaths;
         private readonly string? _requestedXPath;
-        private readonly XmlReader _nodeReader;
 
         /// <summary>
         /// Represents the result of reading an XML node based on a requested XPath expression.
@@ -43,7 +38,7 @@ namespace XPathReader.Common
             }
 
             ActualXPath = actualXPath;
-            _nodeReader = nodeReader;
+            NodeReader = nodeReader;
             _requestedXPath = requestedXPath;
         }
 
@@ -76,7 +71,7 @@ namespace XPathReader.Common
             }
 
             ActualXPath = actualXPath;
-            _nodeReader = nodeReader;
+            NodeReader = nodeReader;
             _requestedXPaths = requestedXPaths;
         }
 
@@ -117,69 +112,8 @@ namespace XPathReader.Common
         /// The <see cref="XmlReader"/> to read the XML node associated with the result.
         /// </summary>
         /// <remarks>
-        /// By default is positioned on the Start Element.
         /// Please make sure that you read all necessary data before requesting the next result from Enumeration.
         /// </remarks>
-        public XmlReader NodeReader
-        {
-            get
-            {
-                if (_nodeReader.NodeType == XmlNodeType.None)
-                {
-                    throw new InvalidOperationException("""
-                        The XmlReader is not positioned on a node. Most likely it has been already closed. 
-                        If seen using First() or Single() LINQ functions, please consider using ToPersistedResult or Select() from the NodeReader first.
-                        """);
-                }
-                return _nodeReader;
-            }
-        }
-
-        /// <summary>
-        /// Converts the current <see cref="ReadResult"/> into a <see cref="PersistedReadResult"/> by fully reading the XML node.
-        /// </summary>
-        /// <remarks>
-        /// If you want to preserve the result after the next read operation, you must call this method to read the node fully.
-        /// </remarks>
-        /// <returns>Instance of <seealso cref="PersistedReadResult"/>.</returns>
-        public PersistedReadResult ToPersistedResult()
-        {
-            XElement element = XElement.Load(NodeReader);
-            // Since we read the node fully, there is no more to read from there, so we just close it.
-            _nodeReader.Close();
-            return ToPersistedResultInternal(element);
-        }
-
-        /// <summary>
-        /// Asynchronously converts the current <see cref="ReadResult"/> into a <see cref="PersistedReadResult"/> by fully reading the XML node.
-        /// </summary>
-        /// <remarks>
-        /// If you want to preserve the result after the next read operation, you must call this method to read the node fully.
-        /// </remarks>
-        /// <param name="cancellationToken">A token to cancel XML read operation.</param>
-        /// <returns>Instance of <seealso cref="PersistedReadResult"/>.</returns>
-        public async Task<PersistedReadResult> ToPersistedResultAsync(CancellationToken cancellationToken = default)
-        {
-#if NETSTANDARD2_1_OR_GREATER
-            XElement element = await XElement.LoadAsync(NodeReader, LoadOptions.None, cancellationToken).ConfigureAwait(false);
-#else
-            XElement element = XElement.Load(new StringReader(await NodeReader.ReadOuterXmlAsync().ConfigureAwait(false)), LoadOptions.None);
-#endif
-            // Since we read the node fully, there is no more to read from there, so we just close it.
-            _nodeReader.Close();
-            return ToPersistedResultInternal(element);
-        }
-
-        private PersistedReadResult ToPersistedResultInternal(XElement xElement)
-        {
-            if (_requestedXPaths is not null)
-            {
-                return new PersistedReadResult(ActualXPath.GetXPath(), xElement, _requestedXPaths);
-            }
-            else
-            {
-                return new PersistedReadResult(ActualXPath.GetXPath(), xElement, RequestedXPath);
-            }
-        }
+        public XmlReader NodeReader { get; }
     }
 }
