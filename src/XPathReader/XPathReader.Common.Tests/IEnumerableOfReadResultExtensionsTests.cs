@@ -75,7 +75,7 @@ namespace ARTX.Common.Tests
 
             var subReader = reader.ReadSubtree();
             subReader.MoveToContent();
-            return new ReadResult(actualXPath, subReader, requestedXPath, "child");
+            return new ReadResult(actualXPath, subReader, requestedXPath);
         }
     }
 }

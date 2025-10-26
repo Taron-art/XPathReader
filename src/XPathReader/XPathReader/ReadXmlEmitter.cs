@@ -139,11 +139,11 @@ namespace ARTX.XPathReader
                                 first = false;
                             }
                             typeList.Append(" }");
-                            writer.WriteLine($"yield return new ReadResult({NameOfTheXPathBuilder}, localReader, {typeList}, \"{element.Identifier.LocalName}\");");
+                            writer.WriteLine($"yield return new ReadResult({NameOfTheXPathBuilder}, localReader, {typeList});");
                         }
                         else
                         {
-                            writer.WriteLine($"yield return new ReadResult({NameOfTheXPathBuilder}, localReader, \"{leaf.RequestedXPaths[0]}\", \"{element.Identifier.LocalName}\");");
+                            writer.WriteLine($"yield return new ReadResult({NameOfTheXPathBuilder}, localReader, \"{leaf.RequestedXPaths[0]}\");");
                         }
 
                         writer.WriteLine("localReader.Dispose();");
