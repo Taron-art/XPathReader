@@ -9,7 +9,6 @@ namespace XPathReader.Common.Internal
     {
         private readonly object _lock = new();
 
-        ///<inheritdoc/>
         public override string Add(char[] key, int start, int len)
         {
             // First, check if the key already exists without locking for performance
