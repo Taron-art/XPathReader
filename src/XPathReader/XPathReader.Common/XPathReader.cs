@@ -35,7 +35,7 @@ namespace XPathReader.Common
 
         protected abstract IEnumerable<ReadResult> ReadInternal(XmlReader reader);
 
-        protected abstract IAsyncEnumerable<ReadResult> ReadInternalAsync(XmlReader reader, CancellationToken cancellationToken);
+        protected abstract IAsyncEnumerable<ReadResult> ReadInternalAsync(XmlReader reader, CancellationToken cancellationToken = default);
 
         private XmlReaderSettings CreateXmlSettings(bool isAsync)
         {

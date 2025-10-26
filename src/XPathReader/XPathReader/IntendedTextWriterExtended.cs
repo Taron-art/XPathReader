@@ -1,11 +1,13 @@
-﻿using System.CodeDom.Compiler;
+﻿using System;
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Microsoft.CodeAnalysis.Text;
 
-namespace XPathReader.Utils
+namespace XPathReader
 {
-    public class IntendedTextWriterExtended : IndentedTextWriter
+    internal class IntendedTextWriterExtended : IndentedTextWriter
     {
         public IntendedTextWriterExtended(TextWriter writer) : base(writer, "    ")
         {
