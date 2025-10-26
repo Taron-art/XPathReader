@@ -63,7 +63,7 @@ namespace XPathReader
                     textWriter.WriteLine(header);
                 }
 
-                EmitRegexPartialMethodOrProperty(result.XPathToGenerate, textWriter);
+                EmitRegexPartialMethod(result.XPathToGenerate, textWriter);
                 EmitXPathReader(result.XPathToGenerate, tree, textWriter);
 
                 context.AddSource($"{result.XPathToGenerate.GeneratedName}.g.cs", textWriter.ToSourceText());
@@ -75,7 +75,7 @@ namespace XPathReader
             }
         }
 
-        private static void EmitRegexPartialMethodOrProperty(XPathReaderDataToGenerate xpathToGenerate, IntendedTextWriterExtended writer)
+        private static void EmitRegexPartialMethod(XPathReaderDataToGenerate xpathToGenerate, IntendedTextWriterExtended writer)
         {
             // Emit the namespace.
             var parent = xpathToGenerate.MethodInfo;
@@ -106,17 +106,7 @@ namespace XPathReader
 
             // Emit the partial method definition.
             writer.WriteLine($"[global::System.CodeDom.Compiler.{_generatedCodeAttribute}]");
-            writer.Write($"{xpathToGenerate.Modifiers} global::XPathReader.Common.XPathReader {xpathToGenerate.MemberName}");
-            if (xpathToGenerate.IsProperty)
-            {
-                writer.WriteLine();
-                writer.OpenBrace();
-                writer.WriteLine("get");
-            }
-            else
-            {
-                writer.WriteLine("()");
-            }
+            writer.WriteLine($"{xpathToGenerate.Modifiers} global::XPathReader.Common.XPathReader{(xpathToGenerate.IsNullable ? "?" : "")} {xpathToGenerate.MemberName}()");
 
             writer.OpenBrace();
             writer.WriteLine($"return __f{xpathToGenerate.GeneratedName} ??= new global::{GeneratedNamespace}.{xpathToGenerate.GeneratedName}();");
