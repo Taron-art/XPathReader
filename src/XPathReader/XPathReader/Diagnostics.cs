@@ -10,7 +10,8 @@ namespace ARTX.XPathReader
             messageFormat: "Please read the license agreement. Code won't be emitted.",
             category: "Usage",
             defaultSeverity: DiagnosticSeverity.Error,
-            isEnabledByDefault: true
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.NotConfigurable
         );
 
         public static readonly DiagnosticDescriptor InvalidArgument = new(
@@ -19,7 +20,8 @@ namespace ARTX.XPathReader
             messageFormat: "The argument '{0}' for the GeneratedXPathReader attribute is not a valid XPath: {1}",
             category: "Usage",
             defaultSeverity: DiagnosticSeverity.Error,
-            isEnabledByDefault: true
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.NotConfigurable
         );
 
         public static readonly DiagnosticDescriptor UnsupportedXPath = new(
@@ -28,7 +30,8 @@ namespace ARTX.XPathReader
             messageFormat: "XPath {0} is unsupported: {1}",
             category: "Usage",
             defaultSeverity: DiagnosticSeverity.Error,
-            isEnabledByDefault: true
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.NotConfigurable
         );
 
         public static readonly DiagnosticDescriptor XPathReaderMemberMustHaveValidSignature = new(
@@ -47,8 +50,7 @@ namespace ARTX.XPathReader
             messageFormat: "Predicate {0} is not recognized and will be ignored",
             category: "Usage",
             DiagnosticSeverity.Warning,
-            isEnabledByDefault: true,
-            customTags: WellKnownDiagnosticTags.CustomSeverityConfigurable);
+            isEnabledByDefault: true);
 
         public static readonly DiagnosticDescriptor ContainsDuplicates = new(
             id: "XPR006",
@@ -56,7 +58,6 @@ namespace ARTX.XPathReader
             messageFormat: "The argument for the GeneratedXPathReader attribute contains duplicated '{0}'",
             category: "Usage",
             DiagnosticSeverity.Warning,
-            isEnabledByDefault: true,
-            customTags: WellKnownDiagnosticTags.CustomSeverityConfigurable);
+            isEnabledByDefault: true);
     }
 }
