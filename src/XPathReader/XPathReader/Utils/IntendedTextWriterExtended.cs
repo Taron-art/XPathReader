@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Text;
 using Microsoft.CodeAnalysis.Text;
 
-namespace ARTX.XPathReader.Utils
+namespace XPathReader.Utils
 {
     public class IntendedTextWriterExtended : IndentedTextWriter
     {

@@ -1,6 +1,4 @@
-﻿using XPathReader.Utils;
-
-namespace ARTX.XPathReader.Utils
+﻿namespace XPathReader.Utils
 {
     public class AsyncXmlReaderTextIntendedTextWriter : XmlReaderTextIntendedTextWriter
     {

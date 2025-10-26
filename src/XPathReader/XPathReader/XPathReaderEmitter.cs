@@ -1,5 +1,4 @@
 ﻿using System.Collections.Immutable;
-using ARTX.XPathReader.Utils;
 using ARTX.XPathReader.XPathParsing;
 using Microsoft.CodeAnalysis;
 using XPathReader.Utils;

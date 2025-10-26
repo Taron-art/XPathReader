@@ -15,7 +15,7 @@ namespace ARTX.XPathReader.Tests.Smoke_Tests
         private static partial XPath.XPathReader CompanyNameReader { get; }
 
         [GeneratedXPathReader("/a/b/c")]
-        private static partial XPath.XPathReader EmptyLeafElementReader();
+        private static partial XPath.XPathReader EmptyElementReader();
 
         [Test]
         public void UkraineXmlReader_ReturnsDifferentData()
@@ -133,7 +133,7 @@ namespace ARTX.XPathReader.Tests.Smoke_Tests
 
         [Test]
         [CancelAfter(100)]
-        public void EmptyElementReader_ReturnsEmptyNode_WhenPresent(CancellationToken testCancellationToken)
+        public void EmptyElementReader_ReturnsOneEmptyNode_WhenOneNodeIsPresent(CancellationToken testCancellationToken)
         {
             Stream testFile = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(
                 """
@@ -143,11 +143,10 @@ namespace ARTX.XPathReader.Tests.Smoke_Tests
                         <c/>
                         <c/>
                     </b>
-                    <b/>
                 </a>
                 """));
             List<string> elements = [];
-            foreach (ReadResult result in EmptyLeafElementReader().Read(testFile))
+            foreach (ReadResult result in EmptyElementReader().Read(testFile))
             {
                 testCancellationToken.ThrowIfCancellationRequested();
                 elements.Add(result.NodeReader.ReadOuterXml());

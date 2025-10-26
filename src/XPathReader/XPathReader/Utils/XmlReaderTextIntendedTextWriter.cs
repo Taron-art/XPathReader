@@ -1,6 +1,4 @@
-﻿using ARTX.XPathReader.Utils;
-
-namespace XPathReader.Utils
+﻿namespace XPathReader.Utils
 {
 
     public abstract class XmlReaderTextIntendedTextWriter : IntendedTextWriterExtended, IXmlReaderTextIntendedTextWriter

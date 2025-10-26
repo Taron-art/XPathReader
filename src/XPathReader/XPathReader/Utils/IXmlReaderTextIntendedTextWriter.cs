@@ -1,4 +1,4 @@
-﻿namespace ARTX.XPathReader.Utils
+﻿namespace XPathReader.Utils
 {
     public interface IXmlReaderTextIntendedTextWriter
     {

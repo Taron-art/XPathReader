@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace ARTX.XPathReader.Utils
+namespace XPathReader.Utils
 {
     internal class VariableStorage
     {
@@ -28,7 +28,7 @@ namespace ARTX.XPathReader.Utils
 
         private string GetValidVariableName(string nodeName)
         {
-            StringBuilder stringBuilder = _variableNameBuilder ??= new(nodeName.Length + 2);
+            StringBuilder stringBuilder = (_variableNameBuilder ??= new(nodeName.Length + 2));
             stringBuilder.Length = 0;
             stringBuilder.Append('e');
             stringBuilder.Append('_');

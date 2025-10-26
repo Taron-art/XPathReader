@@ -10,6 +10,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PackageUsage.Net.Tests", "PackageUsage.Net.Tests\PackageUsage.Net.Tests.csproj", "{55713983-1638-427F-B3EF-A72FCC21DCB4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		AddXPathReader.ps1 = AddXPathReader.ps1
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PackageUsage.NetFramework.C.Tests", "PackageUsage.NetFramework.С.Tests\PackageUsage.NetFramework.C.Tests.csproj", "{187939F6-E492-4E91-9CA9-795C6F40E86E}"
 EndProject
