@@ -53,9 +53,8 @@ namespace ARTX.XPath.Generated
                     
                     if (reader.NodeType == XmlNodeType.Element)
                     {
-                        if ((ReferenceEquals(reader.LocalName, e_root)) && !reader.IsEmptyElement)
+                        if ((ReferenceEquals(reader.LocalName, e_root)) && ++counter00000001 == counter00000001 && !reader.IsEmptyElement)
                         {
-                            ++counter00000001;
                             int originalLength00000002 = currentXPathBuilder.Length;
                             currentXPathBuilder.AddLevel("root");
                             if (counter00000001 != 1)
@@ -68,9 +67,8 @@ namespace ARTX.XPath.Generated
                             {
                                 if (reader.NodeType == XmlNodeType.Element)
                                 {
-                                    if ((ReferenceEquals(reader.LocalName, e_child)))
+                                    if ((ReferenceEquals(reader.LocalName, e_child)) && ++counter00000003 == counter00000003)
                                     {
-                                        ++counter00000003;
                                         int originalLength00000004 = currentXPathBuilder.Length;
                                         currentXPathBuilder.AddLevel("child", counter00000003);
                                         
@@ -127,9 +125,8 @@ namespace ARTX.XPath.Generated
                     
                     if (reader.NodeType == XmlNodeType.Element)
                     {
-                        if ((ReferenceEquals(reader.LocalName, e_root)) && !reader.IsEmptyElement)
+                        if ((ReferenceEquals(reader.LocalName, e_root)) && ++counter00000001 == counter00000001 && !reader.IsEmptyElement)
                         {
-                            ++counter00000001;
                             int originalLength00000002 = currentXPathBuilder.Length;
                             currentXPathBuilder.AddLevel("root");
                             if (counter00000001 != 1)
@@ -142,9 +139,8 @@ namespace ARTX.XPath.Generated
                             {
                                 if (reader.NodeType == XmlNodeType.Element)
                                 {
-                                    if ((ReferenceEquals(reader.LocalName, e_child)))
+                                    if ((ReferenceEquals(reader.LocalName, e_child)) && ++counter00000003 == counter00000003)
                                     {
-                                        ++counter00000003;
                                         int originalLength00000004 = currentXPathBuilder.Length;
                                         currentXPathBuilder.AddLevel("child", counter00000003);
                                         
