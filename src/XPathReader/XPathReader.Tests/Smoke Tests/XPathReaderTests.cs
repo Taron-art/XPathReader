@@ -179,6 +179,8 @@ namespace ARTX.XPathReader.Tests.Smoke_Tests
             {
                 testCancellationToken.ThrowIfCancellationRequested();
                 elements.Add(result.NodeReader.ReadOuterXml());
+
+                Assert.That(result.ActualXPath.GetXPath(), Is.EqualTo($"/a/b[2]/c[{elements.Count}]"));
             }
             Assert.That(elements, Has.Count.EqualTo(2));
             Assert.That(elements[0], Is.EqualTo("<c />"));

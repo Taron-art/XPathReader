@@ -94,11 +94,12 @@ namespace ARTX.XPathReader
                 // If we are not in the leaf, we do not care about empty elements.
                 bool checkForEmptyElement = !group.OfType<XPathTreeLeafElement>().Any();
 
+
+                // including increment of the counter in the if condition to avoid extra condition statements inside.
                 writer.WriteLine(
-                    $"{(i == 0 ? "" : "else ")}if ((ReferenceEquals(reader.LocalName, {_variableStorage[group.Key.LocalName]})){(checkForEmptyElement ? " && !reader.IsEmptyElement" : "")})");
+                    $"{(i == 0 ? "" : "else ")}if ((ReferenceEquals(reader.LocalName, {_variableStorage[group.Key.LocalName]})) && ++{counterVariables[index]} == {counterVariables[index]}{(checkForEmptyElement ? " && !reader.IsEmptyElement" : "")})");
                 writer.OpenBrace();
 
-                writer.WriteLine($"++{counterVariables[index]};");
                 writer.WriteLine($"int {originalLengthVariableName} = {NameOfTheXPathBuilder}.Length;");
 
                 if (isRoot)
